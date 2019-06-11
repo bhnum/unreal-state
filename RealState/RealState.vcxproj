@@ -119,6 +119,7 @@
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="timeutility.cpp" />
     <ClCompile Include="User.cpp" />
+    <ClCompile Include="UserManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h" />
@@ -130,6 +131,7 @@
     <ClInclude Include="sha256.h" />
     <ClInclude Include="timeutility.h" />
     <ClInclude Include="User.h" />
+    <ClInclude Include="UserManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

@@ -42,6 +42,9 @@
     <ClCompile Include="timeutility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UserManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="RealState.qrc">
@@ -56,6 +59,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="sha256.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UserManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
