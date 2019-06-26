@@ -1,4 +1,5 @@
-#include "timeutility.h"
+#include "utility.h"
+#include <random>
 
 using std::istream;
 using std::stringstream;
@@ -93,4 +94,12 @@ string puttimediff(duration d)
 string puttimediff(time_point t)
 {
 	return puttimediff(t - system_clock::now());
+}
+
+std::default_random_engine generator(system_clock::now().time_since_epoch().count());
+
+long long longrand(long long min, long long max)
+{
+	std::uniform_int_distribution<long long> distribution(min, max - 1);
+	return distribution(generator);
 }

@@ -1,5 +1,5 @@
 #include "CppUnitTest.h"
-#include "..\RealState\timeutility.h"
+#include "..\RealState\utility.h"
 #include "..\RealState\sha256.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

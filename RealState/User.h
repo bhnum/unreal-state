@@ -1,6 +1,6 @@
 #pragma once
 
-#include "timeutility.h"
+#include "utility.h"
 
 enum class UserType
 {
@@ -10,13 +10,13 @@ enum class UserType
 class User
 {
 public:
-	User();
+	User() {}
 
 	void set_password(const string &password);
 	bool check_password(const string &password) const;
 
-	int get_id() const { return id; }
-	void set_id(int _id) { id = _id; }
+	long long get_id() const { return id; }
+	void set_id(long long _id) { id = _id; }
 
 	UserType get_type() const { return type; }
 	void set_type(UserType _type) { type = _type; }
@@ -49,13 +49,13 @@ public:
 	friend std::istream &operator>>(std::istream &in, User &user);
 
 private:
-	int id;
-	UserType type;
+	long long id;
+	UserType type = UserType::Regular;
 	string username;
 	string passwordhash;
+	time_point lastlogintime, lastlogouttime;
+	bool inactive = false;
 
 	string name, surname;
 	time_point birthdate;
-	time_point lastlogintime, lastlogouttime;
-	bool inactive = false;
 };

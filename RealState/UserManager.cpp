@@ -4,7 +4,7 @@
 
 using std::ifstream;
 using std::ofstream;
-using std::exception;
+using std::invalid_argument;
 
 UserManager::UserManager(const string &filename) : filename(filename)
 {
@@ -30,7 +30,7 @@ void UserManager::load()
 		inf >> user;
 		if (inf.eof()) break;
 		if (inf.fail())
-			throw exception(("Error reading file \"" + filename + "\"").c_str());
+			throw invalid_argument("Error reading file \"" + filename + "\"");
 		users.push_back(user);
 	}
 	inf.close();
@@ -40,7 +40,7 @@ void UserManager::save()
 {
 	ofstream outf(filename, std::ios::trunc);
 	if (outf.fail())
-		throw exception(("Error opening file \"" + filename + "\" for writing.").c_str());
+		throw invalid_argument("Error opening file \"" + filename + "\" for writing.");
 
 	for (auto i = users.begin(); i != users.end(); i++)
 		outf << *i;
@@ -55,19 +55,19 @@ list<User> &UserManager::get_users()
 void UserManager::register_user(User &user)
 {
 	if (query_user(user.get_username()) != nullptr)
-		throw exception(("Username \"" + user.get_username() + "\" already exists.").c_str());
+		throw invalid_argument("Username \"" + user.get_username() + "\" already exists.");
 
 	// genarate unique id
-	int id;
+	long long id;
 	do
 	{
-		id = rand();
+		id = longrand(1000'0000, 1'0000'0000); // 8 digits
 	} while (query_user(id) != nullptr);
 
 	user.set_id(id);
 	user.set_lastlogintime(time_point());
 	user.set_lastlogouttime(time_point());
-	
+
 	users.push_back(user);
 	save();
 }
@@ -76,17 +76,17 @@ void UserManager::edit_user(const User &user)
 {
 	User *olduser = query_user(user.get_id());
 	if (olduser == nullptr)
-		throw exception(("User id \"" + std::to_string(user.get_id()) + "\" already exists.").c_str());
+		throw invalid_argument("User id \"" + std::to_string(user.get_id()) + "\" does not exist.");
 
 	User *duplicate = query_user(user.get_username());
 	if (duplicate != nullptr && duplicate->get_id() != user.get_id())
-		throw exception(("Username \"" + user.get_username() + "\" already exists.").c_str());
+		throw invalid_argument("Username \"" + user.get_username() + "\" already exists.");
 
 	*olduser = user;
 	save();
 }
 
-void UserManager::delete_user(int id)
+void UserManager::delete_user(long long id)
 {
 	for (auto i = users.begin(); i != users.end(); i++)
 		if (i->get_id() == id)
@@ -105,7 +105,7 @@ bool UserManager::authenticate_user(const string &username, const string &passwo
 	return false;
 }
 
-User *UserManager::query_user(int id)
+User *UserManager::query_user(long long id)
 {
 	for (auto i = users.begin(); i != users.end(); i++)
 		if (i->get_id() == id)
@@ -121,10 +121,28 @@ User *UserManager::query_user(const string &username)
 	return nullptr;
 }
 
-User *UserManager::query_user(bool(*predicate)(User &))
+User *UserManager::query_user(std::function<bool(User&)> predicate)
 {
 	for (auto i = users.begin(); i != users.end(); i++)
 		if (predicate(*i))
 			return &*i;
 	return nullptr;
+}
+
+void UserManager::update_logintime(long long id)
+{
+	User *user = query_user(id);
+	if (user == nullptr)
+		throw invalid_argument("User id \"" + std::to_string(id) + "\" does not exist.");
+	user->set_lastlogintime(system_clock::now());
+	save();
+}
+
+void UserManager::update_logouttime(long long id)
+{
+	User *user = query_user(id);
+	if (user == nullptr)
+		throw invalid_argument("User id \"" + std::to_string(id) + "\" does not exist.");
+	user->set_lastlogouttime(system_clock::now());
+	save();
 }

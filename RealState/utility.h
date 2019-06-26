@@ -1,5 +1,7 @@
 #pragma once
 
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -36,7 +38,6 @@ public:
 private:
 	time_point &time;
 };
-std::istream &operator>>(std::istream &in, getdate &gd);
 
 class gettime
 {
@@ -46,7 +47,6 @@ public:
 private:
 	time_point &time;
 };
-std::istream &operator>>(std::istream &in, gettime &gt);
 
 time_point totime(const string &s);
 time_point todate(const string &s);
@@ -55,3 +55,5 @@ time_point todate(const string &s);
 string puttimediff(duration d);
 
 string puttimediff(time_point t);
+
+long long longrand(long long min, long long max);
