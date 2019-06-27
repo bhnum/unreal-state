@@ -117,6 +117,8 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="Residence.cpp" />
+    <ClCompile Include="ResidenceManager.cpp" />
     <ClCompile Include="utility.cpp" />
     <ClCompile Include="User.cpp" />
     <ClCompile Include="UserManager.cpp" />
@@ -128,6 +130,8 @@
     <QtRcc Include="RealState.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Residence.h" />
+    <ClInclude Include="ResidenceManager.h" />
     <ClInclude Include="sha256.h" />
     <ClInclude Include="utility.h" />
     <ClInclude Include="User.h" />
