@@ -115,6 +115,7 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Contract.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="Residence.cpp" />
@@ -130,6 +131,7 @@
     <QtRcc Include="RealState.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Contract.h" />
     <ClInclude Include="Residence.h" />
     <ClInclude Include="ResidenceManager.h" />
     <ClInclude Include="sha256.h" />
