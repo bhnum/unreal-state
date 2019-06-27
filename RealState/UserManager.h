@@ -23,7 +23,7 @@ public:
 	bool authenticate_user(const string &username, const string &password);
 	User *query_user(long long id);
 	User *query_user(const string &username);
-	User *query_user(std::function<bool(User&)> predicate);
+	list<User*> query_user(std::function<bool(User&)> predicate);
 
 	void update_logintime(long long id);
 	void update_logouttime(long long id);

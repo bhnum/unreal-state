@@ -121,12 +121,13 @@ User *UserManager::query_user(const string &username)
 	return nullptr;
 }
 
-User *UserManager::query_user(std::function<bool(User&)> predicate)
+list<User*> UserManager::query_user(std::function<bool(User&)> predicate)
 {
-	for (auto i = users.begin(); i != users.end(); i++)
+	list<User*> users;
+	for (auto i = this->users.begin(); i != this->users.end(); i++)
 		if (predicate(*i))
-			return &*i;
-	return nullptr;
+			users.push_back(&*i);
+	return users;
 }
 
 void UserManager::update_logintime(long long id)
