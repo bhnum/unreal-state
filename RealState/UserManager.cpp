@@ -8,7 +8,6 @@ using std::invalid_argument;
 
 UserManager::UserManager(const string &filename) : filename(filename)
 {
-	srand(static_cast<unsigned int>(time(nullptr)));
 	load();
 }
 
