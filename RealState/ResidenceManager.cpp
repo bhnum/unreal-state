@@ -69,6 +69,14 @@ void ResidenceManager::add_apartment(ApartmentBuilding & apartment)
 {
 
 }
+Residence * ResidenceManager::query_apartment(int id)
+{
+	return nullptr;
+}
+list<Residence*> ResidenceManager::query_apartment(std::function<bool(ApartmentBuilding*&)>)
+{
+	return list<Residence*>();
+}
 void ResidenceManager::save() {
 	ofstream outf(filename, std::ios::trunc);
 	if (outf.fail())

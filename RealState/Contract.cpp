@@ -4,7 +4,8 @@
 std::ostream &operator<<(std::ostream &out, const Contract *&r)
 {
 	out << static_cast<int>(r->get_type()) << ',';
-	return r->output(out);
+	r->output(out);
+	return out;
 }
 
 std::istream &operator>>(std::istream &in, Contract *&r)
@@ -23,5 +24,6 @@ std::istream &operator>>(std::istream &in, Contract *&r)
 	default:
 		throw std::logic_error("");
 	}
-	return r->input(in);
+	r->input(in);
+	return in;
 }

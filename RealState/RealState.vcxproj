@@ -117,7 +117,9 @@
   <ItemGroup>
     <ClCompile Include="Contract.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="LoginWindow.cpp" />
+    <ClCompile Include="Manager.cpp" />
+    <ClCompile Include="RegisterWindow.cpp" />
     <ClCompile Include="Residence.cpp" />
     <ClCompile Include="ResidenceManager.cpp" />
     <ClCompile Include="utility.cpp" />
@@ -125,19 +127,25 @@
     <ClCompile Include="UserManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="MainWindow.h" />
+    <QtMoc Include="LoginWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="RealState.qrc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Contract.h" />
+    <QtMoc Include="MainWindow.h" />
+    <ClInclude Include="Manager.h" />
+    <QtMoc Include="RegisterWindow.h" />
     <ClInclude Include="Residence.h" />
     <ClInclude Include="ResidenceManager.h" />
     <ClInclude Include="sha256.h" />
     <ClInclude Include="utility.h" />
     <ClInclude Include="User.h" />
     <ClInclude Include="UserManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="MainWindow.ui" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

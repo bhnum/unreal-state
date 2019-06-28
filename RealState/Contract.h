@@ -14,12 +14,12 @@ public:
 	virtual ContractType get_type() const = 0;
 	virtual int get_finalprice() const = 0;
 
-	virtual std::ostream &output(std::ostream &out) const
+	virtual void output(std::ostream &out) const
 	{
 		out << id << ',' << commissionrate << ',';
 	}
 
-	virtual std::istream &input(std::istream &in)
+	virtual void input(std::istream &in)
 	{
 		in >> id;
 		in.ignore();
@@ -51,13 +51,13 @@ class RentConstract : public Contract
 public:
 	RentConstract() {}
 
-	virtual std::ostream &output(std::ostream &out) const
+	virtual void output(std::ostream &out) const
 	{
 		Contract::output(out);
 		out << rentduration << ',';
 	}
 
-	virtual std::istream &input(std::istream &in)
+	virtual void input(std::istream &in)
 	{
 		Contract::input(in);
 		in >> rentduration;
@@ -97,13 +97,13 @@ class SaleContract : public Contract
 public:
 	SaleContract() {}
 
-	virtual std::ostream &output(std::ostream &out) const
+	virtual void output(std::ostream &out) const
 	{
 		Contract::output(out);
 		out << terms << ',';
 	}
 
-	virtual std::istream &input(std::istream &in)
+	virtual void input(std::istream &in)
 	{
 		Contract::input(in);
 		getline(in, terms, ',');

@@ -19,7 +19,7 @@ ostream &operator<<(ostream &out, const User &user)
 {
 	out << user.id << ',' << static_cast<int>(user.type) << ','
 		<< user.username << ',' << user.passwordhash << ','
-		<< user.name << ',' << user.surname << ','
+		<< user.name << ',' << user.surname << ',' << user.balance << ','
 		<< duration_cast<seconds>(user.birthdate.time_since_epoch()).count() << ','
 		<< duration_cast<seconds>(user.lastlogintime.time_since_epoch()).count() << ','
 		<< duration_cast<seconds>(user.lastlogouttime.time_since_epoch()).count() << ','
@@ -37,6 +37,8 @@ istream &operator>>(istream &in, User &user)
 	getline(in, user.passwordhash, ',');
 	getline(in, user.name, ',');
 	getline(in, user.surname, ',');
+	in >> user.balance;
+	in.ignore();
 
 	long long birthdate, lastlogintime, lastlogouttime;
 	in >> birthdate;

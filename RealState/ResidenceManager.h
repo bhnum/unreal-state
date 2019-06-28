@@ -23,8 +23,8 @@ public:
 	list<ApartmentBuilding>& get_apartment() {
 		return aparments;
 	}
-	Residence* query_residence(int id);
-	list<Residence*> query_residence(std::function<bool(Residence*&)>);
+	Residence* query_apartment(int id);
+	list<Residence*> query_apartment(std::function<bool(ApartmentBuilding*&)>);
 	void save();
 	void load();
 	explicit ResidenceManager(const string &filename = "residences.txt");

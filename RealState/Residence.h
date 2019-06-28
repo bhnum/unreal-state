@@ -25,12 +25,12 @@ public:
 	virtual int get_totalarea() const = 0;
 	virtual string get_address() const = 0;
 
-	virtual std::ostream &output(std::ostream &out) const
+	virtual void output(std::ostream &out) const
 	{
 		out << id << ',' << buildarea << ',' << numberofrooms << ',' << photodata << ',';
 	}
 
-	virtual std::istream &input(std::istream &in)
+	virtual void input(std::istream &in)
 	{
 		in >> id;
 		in.ignore();
@@ -68,13 +68,13 @@ class Villa : public Residence
 public:
 	Villa() {}
 
-	virtual std::ostream &output(std::ostream &out) const override
+	virtual void output(std::ostream &out) const override
 	{
 		Residence::output(out);
 		out << baseprice << ',' << address << ',';
 	}
 
-	virtual std::istream &input(std::istream &in)
+	virtual void input(std::istream &in)
 	{
 		Residence::input(in);
 		in >> baseprice;
@@ -98,13 +98,13 @@ class NothernVilla : public Villa
 public:
 	NothernVilla() {}
 
-	virtual std::ostream &output(std::ostream &out) const override
+	virtual void output(std::ostream &out) const override
 	{
 		Villa::output(out);
 		out << frontyardarea << ',' << backyardarea << ',';
 	}
 
-	virtual std::istream &input(std::istream &in)
+	virtual void input(std::istream &in)
 	{
 		Villa::input(in);
 		in >> frontyardarea;
@@ -145,13 +145,13 @@ class SouthernVilla : public Villa
 public:
 	SouthernVilla() {}
 
-	virtual std::ostream &output(std::ostream &out) const override
+	virtual void output(std::ostream &out) const override
 	{
 		Villa::output(out);
 		out << yardarea << ',' << garagearea << ',';
 	}
 
-	virtual std::istream &input(std::istream &in)
+	virtual void input(std::istream &in)
 	{
 		Villa::input(in);
 		in >> yardarea;
@@ -233,13 +233,13 @@ class Apartment : public Residence
 public:
 	Apartment() {}
 
-	virtual std::ostream &output(std::ostream &out) const override
+	virtual void output(std::ostream &out) const override
 	{
 		Residence::output(out);
 		out << floornumber << ',' << building->get_id() << ',';
 	}
 
-	virtual std::istream &input(std::istream &in)
+	virtual void input(std::istream &in)
 	{
 		Residence::input(in);
 		in >> floornumber;

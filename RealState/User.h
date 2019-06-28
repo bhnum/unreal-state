@@ -33,14 +33,17 @@ public:
 	time_point get_lastlogouttime() const { return lastlogouttime; }
 	void set_lastlogouttime(time_point _lastlogouttime) { lastlogouttime = _lastlogouttime; }
 
+	bool get_inactive() const { return inactive; }
+	void set_inactive(bool _inactive) { inactive = _inactive; }
+
 	string get_name() const { return name; }
 	void set_name(string _name) { name = _name; }
 
 	string get_surname() const { return surname; }
 	void set_surname(string _surname) { surname = _surname; }
 
-	bool get_inactive() const { return inactive; }
-	void set_inactive(bool _inactive) { inactive = _inactive; }
+	int get_balance() const { return balance; }
+	void set_balance(int _balance) { balance = _balance; }
 
 	time_point get_birthdate() const { return birthdate; }
 	void set_birthdate(time_point _birthdate) { birthdate = _birthdate; }
@@ -57,5 +60,6 @@ private:
 	bool inactive = false;
 
 	string name, surname;
+	int balance;
 	time_point birthdate;
 };

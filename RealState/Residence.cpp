@@ -4,7 +4,8 @@
 std::ostream &operator<<(std::ostream &out, const Residence *&r)
 {
 	out << static_cast<int>(r->get_type()) << ',';
-	return r->output(out);
+	r->output(out);
+	return out;
 }
 
 std::istream &operator>>(std::istream &in, Residence *&r)
@@ -26,7 +27,8 @@ std::istream &operator>>(std::istream &in, Residence *&r)
 	default:
 		throw std::logic_error("");
 	}
-	return r->input(in);
+	r->input(in);
+	return in;
 }
 
 std::ostream &operator<<(std::ostream &out, const ApartmentBuilding &r)
@@ -34,6 +36,7 @@ std::ostream &operator<<(std::ostream &out, const ApartmentBuilding &r)
 	out << r.id << ',' << r.totalarea << ',' << r.baseprice << ',' << r.haselevator << ','
 		<< r.numberoffloors << ',' << r.numberofapartments << ',' << r.address << ','
 		<< r.photodata << ',';
+	return out;
 }
 
 std::istream &operator>>(std::istream &in, ApartmentBuilding &r)
@@ -52,4 +55,5 @@ std::istream &operator>>(std::istream &in, ApartmentBuilding &r)
 	in.ignore();
 	getline(in, r.address, ',');
 	getline(in, r.photodata, ',');
+	return in;
 }
