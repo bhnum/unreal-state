@@ -15,8 +15,8 @@ public:
 	void set_password(const string &password);
 	bool check_password(const string &password) const;
 
-	long long get_id() const { return id; }
-	void set_id(long long _id) { id = _id; }
+	int get_id() const { return id; }
+	void set_id(int _id) { id = _id; }
 
 	UserType get_type() const { return type; }
 	void set_type(UserType _type) { type = _type; }
@@ -52,7 +52,7 @@ public:
 	friend std::istream &operator>>(std::istream &in, User &user);
 
 private:
-	long long id;
+	int id = 0;
 	UserType type = UserType::Regular;
 	string username;
 	string passwordhash;
@@ -60,6 +60,6 @@ private:
 	bool inactive = false;
 
 	string name, surname;
-	int balance;
+	int balance = 0;
 	time_point birthdate;
 };

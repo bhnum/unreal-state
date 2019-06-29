@@ -115,16 +115,15 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AdminWindow.cpp" />
     <ClCompile Include="Contract.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="LoginWindow.cpp" />
     <ClCompile Include="Manager.cpp" />
     <ClCompile Include="RegisterWindow.cpp" />
     <ClCompile Include="Residence.cpp" />
-    <ClCompile Include="ResidenceManager.cpp" />
     <ClCompile Include="utility.cpp" />
     <ClCompile Include="User.cpp" />
-    <ClCompile Include="UserManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="LoginWindow.h" />
@@ -133,16 +132,16 @@
     <QtRcc Include="RealState.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="AdminWindow.h" />
     <ClInclude Include="Contract.h" />
     <QtMoc Include="MainWindow.h" />
-    <ClInclude Include="Manager.h" />
+    <ClInclude Include="ManagerAbstract.h" />
     <QtMoc Include="RegisterWindow.h" />
+    <ClInclude Include="Manager.h" />
     <ClInclude Include="Residence.h" />
-    <ClInclude Include="ResidenceManager.h" />
     <ClInclude Include="sha256.h" />
     <ClInclude Include="utility.h" />
     <ClInclude Include="User.h" />
-    <ClInclude Include="UserManager.h" />
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MainWindow.ui" />

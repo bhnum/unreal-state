@@ -11,6 +11,9 @@ class Contract
 public:
 	Contract() {}
 
+	virtual Contract &assign(const Contract &r) = 0;
+	virtual Contract *clone() = 0;
+
 	virtual ContractType get_type() const = 0;
 	virtual int get_finalprice() const = 0;
 
@@ -50,6 +53,17 @@ class RentConstract : public Contract
 {
 public:
 	RentConstract() {}
+
+	virtual Contract &assign(const Contract &r)
+	{
+		const RentConstract &a = dynamic_cast<const RentConstract&>(r);
+		return *this = a;
+	}
+
+	virtual Contract *clone()
+	{
+		return new RentConstract(*this);
+	}
 
 	virtual void output(std::ostream &out) const
 	{
@@ -96,6 +110,17 @@ class SaleContract : public Contract
 {
 public:
 	SaleContract() {}
+
+	virtual Contract &assign(const Contract &r)
+	{
+		const SaleContract &a = dynamic_cast<const SaleContract&>(r);
+		return *this = a;
+	}
+
+	virtual Contract *clone()
+	{
+		return new SaleContract(*this);
+	}
 
 	virtual void output(std::ostream &out) const
 	{

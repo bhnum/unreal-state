@@ -12,6 +12,9 @@
 #include <QLineEdit>
 #include <QSpinBox>
 #include <QDateEdit>
+#include <QTabWidget>
+#include <QTableView>
+#include <QStandardItemModel>
 
 class MainWindow : public QMainWindow
 {

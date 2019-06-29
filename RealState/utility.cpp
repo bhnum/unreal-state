@@ -98,8 +98,8 @@ string puttimediff(time_point t)
 
 std::default_random_engine generator(system_clock::now().time_since_epoch().count());
 
-long long longrand(long long min, long long max)
+int longrand(int min, int max)
 {
-	std::uniform_int_distribution<long long> distribution(min, max - 1);
+	std::uniform_int_distribution<int> distribution(min, max - 1);
 	return distribution(generator);
 }

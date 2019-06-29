@@ -1,7 +1,8 @@
 #pragma once
 
 #include "MainWindow.h"
-#include "UserManager.h"
+#include "AdminWindow.h"
+#include "Manager.h"
 
 class RegisterWindow : public MainWindow
 {

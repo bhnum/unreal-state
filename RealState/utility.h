@@ -56,4 +56,4 @@ string puttimediff(duration d);
 
 string puttimediff(time_point t);
 
-long long longrand(long long min, long long max);
+int longrand(int min, int max);

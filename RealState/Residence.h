@@ -19,6 +19,9 @@ public:
 
 	virtual ~Residence() {}
 
+	virtual Residence &assign(const Residence &r) = 0;
+	virtual Residence *clone() = 0;
+
 	virtual ResidenceType get_type() const = 0;
 	virtual int get_finalprice() const = 0;
 	virtual int get_baseprice() const = 0;
@@ -57,9 +60,9 @@ public:
 	friend std::istream &operator>>(std::istream &in, Residence *&r);
 
 protected:
-	int id;
-	int buildarea;
-	int numberofrooms;
+	int id = 0;
+	int buildarea = 0;
+	int numberofrooms = 0;
 	string photodata;
 };
 
@@ -89,7 +92,7 @@ public:
 	void set_address(string _address) { address = _address; }
 
 protected:
-	int baseprice;
+	int baseprice = 0;
 	string address;
 };
 
@@ -97,6 +100,17 @@ class NothernVilla : public Villa
 {
 public:
 	NothernVilla() {}
+
+	virtual Residence &assign(const Residence &r) override
+	{
+		const NothernVilla &a = dynamic_cast<const NothernVilla&>(r);
+		return *this = a;
+	}
+
+	virtual Residence *clone() override
+	{
+		return new NothernVilla(*this);
+	}
 
 	virtual void output(std::ostream &out) const override
 	{
@@ -135,8 +149,8 @@ public:
 	}
 
 protected:
-	int frontyardarea;
-	int backyardarea;
+	int frontyardarea = 0;
+	int backyardarea = 0;
 
 };
 
@@ -144,6 +158,17 @@ class SouthernVilla : public Villa
 {
 public:
 	SouthernVilla() {}
+
+	virtual Residence &assign(const Residence &r) override
+	{
+		const SouthernVilla &a = dynamic_cast<const SouthernVilla&>(r);
+		return *this = a;
+	}
+
+	virtual Residence *clone() override
+	{
+		return new SouthernVilla(*this);
+	}
 
 	virtual void output(std::ostream &out) const override
 	{
@@ -182,8 +207,8 @@ public:
 	}
 
 protected:
-	int yardarea;
-	int garagearea;
+	int yardarea = 0;
+	int garagearea = 0;
 
 };
 
@@ -191,6 +216,11 @@ class ApartmentBuilding
 {
 public:
 	ApartmentBuilding() {}
+
+	int get_finalprice()
+	{
+		return totalarea * baseprice * 4 / 5;
+	}
 
 	int get_id() const { return id; }
 	void set_id(int _id) { id = _id; }
@@ -217,21 +247,37 @@ public:
 	friend std::istream &operator>>(std::istream &in, ApartmentBuilding &r);
 
 protected:
-	int id;
-	int totalarea;
-	int baseprice;
-	bool haselevator;
-	int numberoffloors;
-	int numberofapartments;
+	int id = 0;
+	int totalarea = 0;
+	int baseprice = 0;
+	bool haselevator = false;
+	int numberoffloors = 0;
+	int numberofapartments = 0;
 	string address;
 	string photodata;
 
+};
+
+enum class ApartmentUsage
+{
+	Regular, Business, Administrative,
 };
 
 class Apartment : public Residence
 {
 public:
 	Apartment() {}
+
+	virtual Residence &assign(const Residence &r) override
+	{
+		const Apartment &a = dynamic_cast<const Apartment&>(r);
+		return *this = a;
+	}
+
+	virtual Residence *clone() override
+	{
+		return new Apartment(*this);
+	}
 
 	virtual void output(std::ostream &out) const override
 	{
@@ -259,7 +305,27 @@ public:
 
 	virtual int get_finalprice() const override
 	{
-		throw std::logic_error("Not implemented!");
+		int initial_price = buildarea * get_baseprice();
+		int price = initial_price;
+		price += initial_price * (floornumber - 1) * 5 / 100;
+		price += initial_price * (numberofrooms - 1) * 8 / 100;
+		if (building->get_haselevator())
+			price += initial_price / 50;
+		switch (usage)
+		{
+		case ApartmentUsage::Regular:
+			break;
+		case ApartmentUsage::Business:
+			price += initial_price / 2;
+			break;
+		case ApartmentUsage::Administrative:
+			price += initial_price * 3 / 10;
+			break;
+		default:
+			throw std::logic_error("");
+			break;
+		}
+		return price;
 	}
 
 	virtual int get_totalarea() const override
@@ -277,7 +343,11 @@ public:
 		return building->get_address();
 	}
 
+	ApartmentUsage get_usage() const { return usage; }
+	void set_usage(ApartmentUsage _usage) { usage = _usage; }
+
 protected:
-	int floornumber;
+	int floornumber = 0;
+	ApartmentUsage usage;
 	ApartmentBuilding *building;
 };
