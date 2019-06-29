@@ -53,7 +53,7 @@ bool UserManager::authenticate_user(const string & username, const string & pass
 {
 	for (auto i = data.begin(); i != data.end(); i++)
 		if (i->get_username() == username)
-			return i->check_password(password);
+			return !(i->get_inactive()) && i->check_password(password);
 	return false;
 }
 
