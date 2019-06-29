@@ -60,6 +60,9 @@
     <ClCompile Include="UsermanWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UserInfoWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="RealState.qrc">
@@ -105,12 +108,18 @@
     <QtMoc Include="UsermanWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="UserInfoWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MainWindow.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="UsermanWindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="UserInfoWindow.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

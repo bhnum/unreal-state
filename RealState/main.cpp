@@ -1,10 +1,13 @@
 #include "LoginWindow.h"
 #include <QtWidgets/QApplication>
-
+#include "UserInfoWindow.h"
 int main(int argc, char *argv[])
 {
+	User * user;
+
 	UserManager userManager;
 	User* admin=userManager.query_user("admin");
+	user = userManager.query_user("A");
 	if (admin== nullptr)
 	{
 		User admin;
@@ -19,7 +22,8 @@ int main(int argc, char *argv[])
 	}
 	QApplication a(argc, argv);
 	//LoginWindow w(userManager);
-	AdminWindow w(userManager);
+	UserInfoWindow w(userManager,user->get_id());
+	//AdminWindow w(userManager);
 	w.show();
 	return a.exec();
 }
