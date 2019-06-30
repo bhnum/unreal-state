@@ -11,11 +11,13 @@ class UsermanWindow : public QWidget
 public:
 	UsermanWindow(UserManager&userman,QWidget *parent = Q_NULLPTR);
 	~UsermanWindow();
-	public slots:
+
+public slots:
 	void action_clicked();
+
 private:
 	void populate();
-	QStandardItemModel* model;
-	QTableView *usersTable;
 	UserManager&userman;
+	QStandardItemModel *model;
+	QTableView *usersTable;
 };

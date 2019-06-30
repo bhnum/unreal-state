@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -60,6 +60,26 @@
      <attribute name="title">
       <string>Tab 2</string>
      </attribute>
+     <widget class="QDateEdit" name="dateEdit">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>90</y>
+        <width>110</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="displayFormat">
+       <string>yyyy-MM-dd</string>
+      </property>
+      <property name="date">
+       <date>
+        <year>1992</year>
+        <month>8</month>
+        <day>9</day>
+       </date>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>

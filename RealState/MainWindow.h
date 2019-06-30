@@ -26,6 +26,7 @@ public:
 
 	virtual void closeEvent(QCloseEvent *event) override
 	{
+		QMainWindow::closeEvent(event);
 		emit(closed());
 	}
 

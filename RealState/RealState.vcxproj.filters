@@ -116,11 +116,5 @@
     <QtUic Include="MainWindow.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="UsermanWindow.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="UserInfoWindow.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
   </ItemGroup>
 </Project>

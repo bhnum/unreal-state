@@ -3,18 +3,16 @@
 #include "UserInfoWindow.h"
 int main(int argc, char *argv[])
 {
-	User * user;
-
 	UserManager userManager;
 	User* admin=userManager.query_user("admin");
-	user = userManager.query_user("A");
 	if (admin== nullptr)
 	{
-		User admin;
-		admin.set_type(UserType::Admin);
-		admin.set_username("admin");
-		admin.set_password("admin");
-		userManager.register_user(admin);
+		User newadmin;
+		newadmin.set_type(UserType::Admin);
+		newadmin.set_username("admin");
+		newadmin.set_password("admin");
+		userManager.register_user(newadmin);
+		admin = userManager.query_user("admin");
 	}
 	else if (admin->get_inactive()) {
 		admin->set_inactive(false);
@@ -22,7 +20,7 @@ int main(int argc, char *argv[])
 	}
 	QApplication a(argc, argv);
 	//LoginWindow w(userManager);
-	UserInfoWindow w(userManager,user->get_id());
+	UserInfoWindow w(userManager,admin->get_id());
 	//AdminWindow w(userManager);
 	w.show();
 	return a.exec();

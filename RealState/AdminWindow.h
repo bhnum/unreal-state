@@ -1,6 +1,8 @@
 #pragma once
-#include "UsermanWindow.h"
+
 #include "MainWindow.h"
+#include "UsermanWindow.h"
+#include "UserInfoWindow.h"
 #include "Manager.h"
 
 class AdminWindow : public MainWindow
