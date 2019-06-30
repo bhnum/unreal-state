@@ -29,12 +29,8 @@ public:
 };
 
 
-class ResidenceManager : RefManager<Residence>, ValManager<ApartmentBuilding>
+class ResidenceManager : RefManager<Residence>
 {
-	using RefManager<Residence>::filename;
-	list<Residence*> &residences = RefManager<Residence>::data;
-	list<ApartmentBuilding> &apartments = ValManager<ApartmentBuilding>::data;
-
 public:
 	explicit ResidenceManager(const string &filename = "residences.txt");
 
@@ -50,22 +46,15 @@ public:
 	{
 		return RefManager<Residence>::query(predicate); 
 	}
-
-	list<ApartmentBuilding> &get_apartments() { return ValManager<ApartmentBuilding>::get(); }
-	void add_apartment(ApartmentBuilding& apartment) { ValManager<ApartmentBuilding>::add(apartment); }
-	void edit_apartment(const ApartmentBuilding& apartment) { ValManager<ApartmentBuilding>::edit(apartment); }
-	void delete_apartment(int id) { ValManager<ApartmentBuilding>::remove(id); }
-	ApartmentBuilding* query_apartment(int id) { return ValManager<ApartmentBuilding>::query(id); }
-	list<ApartmentBuilding*> query_apartment(std::function<bool(ApartmentBuilding&)> predicate)
-	{
-		return ValManager<ApartmentBuilding>::query(predicate);
-	}
+private:
+	void bind();
 };
 
 class ContractManager : RefManager<Contract>
 {
 public:
-	explicit ContractManager(ResidenceManager &resman, const string &filename = "contracts.txt");
+	explicit ContractManager(ResidenceManager &resman, UserManager &userman,
+		const string &filename = "contracts.txt");
 
 	void load();
 	void save();
@@ -80,6 +69,8 @@ public:
 		return RefManager<Contract>::query(predicate);
 	}
 private:
+	void bind();
 	ResidenceManager &resman;
+	UserManager &userman;
 };
 

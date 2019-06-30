@@ -19,12 +19,16 @@ public:
 
 	virtual void output(std::ostream &out) const
 	{
-		out << id << ',' << commissionrate << ',';
+		out << id << ',' << residenceid << ',' << holderid << ',' << commissionrate << ',';
 	}
 
 	virtual void input(std::istream &in)
 	{
 		in >> id;
+		in.ignore();
+		in >> residenceid;
+		in.ignore();
+		in >> holderid;
 		in.ignore();
 		in >> commissionrate;
 		in.ignore();
@@ -33,8 +37,17 @@ public:
 	int get_id() const { return id; }
 	void set_id(int _id) { id = _id; }
 
+	int get_residenceid() const { return residenceid; }
+	void set_residenceid(int _residenceid) { residenceid = _residenceid; }
+
 	Residence *get_residence() const { return residence; }
 	void set_residence(Residence *_residence) { residence = _residence; }
+
+	int get_holderid() const { return holderid; }
+	void set_holderid(int _holderid) { holderid = _holderid; }
+
+	User *get_holder() const { return holder; }
+	void set_holder(User *_holder) { holder = _holder; }
 
 	int get_commissionrate() const { return commissionrate; }
 	void set_commissionrate(int _commissionrate) { commissionrate = _commissionrate; }
@@ -44,7 +57,10 @@ public:
 
 protected:
 	int id;
+	int residenceid;
+	int holderid;
 	Residence *residence;
+	User *holder;
 	int commissionrate;
 
 };

@@ -96,38 +96,16 @@ void ResidenceManager::load()
 
 	while (true)
 	{
-		if (inf.peek() != 'a')
-			break;
-
-		inf.ignore(2);
-		ApartmentBuilding a;
-		inf >> a;
-		if (inf.eof()) break;
-		if (inf.fail())
-			throw runtime_error("Error reading file \"" + filename + "\"");
-		apartments.push_back(a);
-	}
-
-	while (true)
-	{
 		Residence* r;
 		inf >> r;
-		if (r->get_type() == ResidenceType::Apartment)
-		{
-			int bid;
-			inf >> bid;
-			inf.ignore();
-			ApartmentBuilding *b = query_apartment(bid);
-			if (b == nullptr)
-				throw runtime_error("Error! file \"" + filename + "\" is corrupted.");
-			dynamic_cast<Apartment *>(r)->set_building(b);
-		}
 		if (inf.eof()) break;
 		if (inf.fail())
 			throw runtime_error("Error reading file \"" + filename + "\"");
-		residences.push_back(r);
+		data.push_back(r);
 	}
 	inf.close();
+
+	bind();
 }
 
 void ResidenceManager::save()
@@ -137,11 +115,7 @@ void ResidenceManager::save()
 	ofstream outf(filename, std::ios::trunc);
 	if (outf.fail())
 		throw runtime_error("Error opening file \"" + filename + "\" for writing.");
-	for each (auto i in apartments)
-	{
-		outf << "a," << i << std::endl;
-	}
-	for each (auto i in residences)
+	for each (auto i in data)
 	{
 		outf << i << std::endl;
 	} 
@@ -149,8 +123,22 @@ void ResidenceManager::save()
 	outf.close();
 }
 
-ContractManager::ContractManager(ResidenceManager &resman, const string & filename)
-	: RefManager<Contract>(filename), resman(resman)
+void ResidenceManager::bind()
+{
+	for each (auto r in data)
+	{
+		if (r->get_type() == ResidenceType::Apartment)
+		{
+			Apartment &a = dynamic_cast<Apartment&>(*r);
+			ApartmentBuilding &b = dynamic_cast<ApartmentBuilding&>(*query_residence(a.get_buildingid()));
+			a.set_building(&b);
+		}
+	}
+}
+
+
+ContractManager::ContractManager(ResidenceManager &resman, UserManager &userman, const string & filename)
+	: RefManager<Contract>(filename), resman(resman), userman(userman)
 {
 	load();
 }
@@ -166,20 +154,14 @@ void ContractManager::load()
 		Contract *c;
 		inf >> c;
 
-		int rid;
-		inf >> rid;
-		inf.ignore();
-		Residence *r = resman.query_residence(rid);
-		if (r == nullptr)
-			throw runtime_error("Error! file \"" + filename + "\" is corrupted.");
-		c->set_residence(r);
-
 		if (inf.eof()) break;
 		if (inf.fail())
 			throw runtime_error("Error reading file \"" + filename + "\"");
 		data.push_back(c);
 	}
 	inf.close();
+
+	bind();
 }
 
 void ContractManager::save()
@@ -191,6 +173,17 @@ void ContractManager::save()
 		throw runtime_error("Error opening file \"" + filename + "\" for writing.");
 
 	for (auto i = data.begin(); i != data.end(); i++)
-		outf << *i << (*i)->get_residence()->get_id() << std::endl;
+		outf << *i;
 	outf.close();
+}
+
+void ContractManager::bind()
+{
+	for each (auto c in data)
+	{
+		Residence *r = resman.query_residence(c->get_residenceid());
+		User *u = userman.query_user(c->get_holderid());
+		c->set_residence(r);
+		c->set_holder(u);
+	}
 }

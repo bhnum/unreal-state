@@ -9,6 +9,7 @@ enum class ResidenceType
 {
 	NorthernVilla,
 	SouthernVilla,
+	ApartmentBuilding,
 	Apartment,
 };
 
@@ -66,10 +67,10 @@ protected:
 	string photodata;
 };
 
-class Villa : public Residence
+class IndipendentResidence : public Residence
 {
 public:
-	Villa() {}
+	IndipendentResidence() {}
 
 	virtual void output(std::ostream &out) const override
 	{
@@ -96,7 +97,7 @@ protected:
 	string address;
 };
 
-class NothernVilla : public Villa
+class NothernVilla : public IndipendentResidence
 {
 public:
 	NothernVilla() {}
@@ -114,24 +115,18 @@ public:
 
 	virtual void output(std::ostream &out) const override
 	{
-		Villa::output(out);
-		out << frontyardarea << ',' << backyardarea << ',';
+		IndipendentResidence::output(out);
+		out << frontyardarea << ',' << backyardarea << std::endl;
 	}
 
 	virtual void input(std::istream &in)
 	{
-		Villa::input(in);
+		IndipendentResidence::input(in);
 		in >> frontyardarea;
 		in.ignore();
 		in >> backyardarea;
 		in.ignore();
 	}
-
-	int get_frontyardarea() const { return frontyardarea; }
-	void set_frontyardarea(int _frontyardarea) { frontyardarea = _frontyardarea; }
-
-	int get_backyardarea() const { return backyardarea; }
-	void set_backyardarea(int _backyardarea) { backyardarea = _backyardarea; }
 
 	virtual ResidenceType get_type() const override
 	{
@@ -148,13 +143,19 @@ public:
 		return buildarea + frontyardarea + backyardarea;
 	}
 
+	int get_frontyardarea() const { return frontyardarea; }
+	void set_frontyardarea(int _frontyardarea) { frontyardarea = _frontyardarea; }
+
+	int get_backyardarea() const { return backyardarea; }
+	void set_backyardarea(int _backyardarea) { backyardarea = _backyardarea; }
+
 protected:
 	int frontyardarea = 0;
 	int backyardarea = 0;
 
 };
 
-class SouthernVilla : public Villa
+class SouthernVilla : public IndipendentResidence
 {
 public:
 	SouthernVilla() {}
@@ -172,24 +173,18 @@ public:
 
 	virtual void output(std::ostream &out) const override
 	{
-		Villa::output(out);
-		out << yardarea << ',' << garagearea << ',';
+		IndipendentResidence::output(out);
+		out << yardarea << ',' << garagearea << std::endl;
 	}
 
 	virtual void input(std::istream &in)
 	{
-		Villa::input(in);
+		IndipendentResidence::input(in);
 		in >> yardarea;
 		in.ignore();
 		in >> garagearea;
 		in.ignore();
 	}
-
-	int get_yardarea() const { return yardarea; }
-	void set_yardarea(int _yardarea) { yardarea = _yardarea; }
-
-	int get_garagearea() const { return garagearea; }
-	void set_garagearea(int _garagearea) { garagearea = _garagearea; }
 
 	virtual ResidenceType get_type() const override
 	{
@@ -206,30 +201,66 @@ public:
 		return buildarea + yardarea + garagearea;
 	}
 
+	int get_yardarea() const { return yardarea; }
+	void set_yardarea(int _yardarea) { yardarea = _yardarea; }
+
+	int get_garagearea() const { return garagearea; }
+	void set_garagearea(int _garagearea) { garagearea = _garagearea; }
+
 protected:
 	int yardarea = 0;
 	int garagearea = 0;
 
 };
 
-class ApartmentBuilding
+class ApartmentBuilding : public IndipendentResidence
 {
 public:
 	ApartmentBuilding() {}
 
-	int get_finalprice()
+	virtual Residence &assign(const Residence &r) override
+	{
+		const ApartmentBuilding &a = dynamic_cast<const ApartmentBuilding&>(r);
+		return *this = a;
+	}
+
+	virtual Residence *clone() override
+	{
+		return new ApartmentBuilding(*this);
+	}
+
+	virtual void output(std::ostream &out) const override
+	{
+		IndipendentResidence::output(out);
+		out << totalarea << ',' << haselevator << ','
+			<< numberoffloors << ',' << numberofapartments << std::endl;
+	}
+
+	virtual void input(std::istream &in)
+	{
+		IndipendentResidence::input(in);
+		in >> totalarea;
+		in.ignore();
+		in >> haselevator;
+		in.ignore();
+		in >> numberoffloors;
+		in.ignore();
+		in >> numberofapartments;
+		in.ignore();
+	}
+
+	virtual ResidenceType get_type() const override
+	{
+		return ResidenceType::ApartmentBuilding;
+	}
+
+	virtual int get_finalprice() const override
 	{
 		return totalarea * baseprice * 4 / 5;
 	}
 
-	int get_id() const { return id; }
-	void set_id(int _id) { id = _id; }
-
 	int get_totalarea() const { return totalarea; }
 	void set_totalarea(int _totalarea) { totalarea = _totalarea; }
-
-	int get_baseprice() const { return baseprice; }
-	void set_baseprice(int _baseprice) { baseprice = _baseprice; }
 
 	bool get_haselevator() const { return haselevator; }
 	void set_haselevator(bool _haselevator) { haselevator = _haselevator; }
@@ -240,22 +271,11 @@ public:
 	int get_numberofapartments() const { return numberofapartments; }
 	void set_numberofapartments(int _numberofapartments) { numberofapartments = _numberofapartments; }
 
-	string get_address() const { return address; }
-	void set_address(string _address) { address = _address; }
-
-	friend std::ostream &operator<<(std::ostream &out, const ApartmentBuilding &r);
-	friend std::istream &operator>>(std::istream &in, ApartmentBuilding &r);
-
 protected:
-	int id = 0;
 	int totalarea = 0;
-	int baseprice = 0;
 	bool haselevator = false;
 	int numberoffloors = 0;
 	int numberofapartments = 0;
-	string address;
-	string photodata;
-
 };
 
 enum class ApartmentUsage
@@ -282,7 +302,7 @@ public:
 	virtual void output(std::ostream &out) const override
 	{
 		Residence::output(out);
-		out << floornumber << ',' << building->get_id() << ',';
+		out << floornumber << ',' << buildingid << std::endl;
 	}
 
 	virtual void input(std::istream &in)
@@ -290,13 +310,9 @@ public:
 		Residence::input(in);
 		in >> floornumber;
 		in.ignore();
+		in >> buildingid;
+		in.ignore();
 	}
-
-	int get_floornumber() const { return floornumber; }
-	void set_floornumber(int _floornumber) { floornumber = _floornumber; }
-
-	ApartmentBuilding *get_building() const { return building; }
-	void set_building(ApartmentBuilding *_building) { building = _building; }
 
 	virtual ResidenceType get_type() const override
 	{
@@ -330,7 +346,7 @@ public:
 
 	virtual int get_totalarea() const override
 	{
-		return building->get_totalarea();
+		return buildarea;
 	}
 
 	virtual int get_baseprice() const override
@@ -343,11 +359,21 @@ public:
 		return building->get_address();
 	}
 
+	int get_buildingid() const { return buildingid; }
+	void set_buildingid(int _buildingid) { buildingid = _buildingid; }
+
+	ApartmentBuilding *get_building() const { return building; }
+	void set_building(ApartmentBuilding *_building) { building = _building; }
+
+	int get_floornumber() const { return floornumber; }
+	void set_floornumber(int _floornumber) { floornumber = _floornumber; }
+
 	ApartmentUsage get_usage() const { return usage; }
 	void set_usage(ApartmentUsage _usage) { usage = _usage; }
 
 protected:
+	int buildingid;
+	ApartmentBuilding *building;
 	int floornumber = 0;
 	ApartmentUsage usage;
-	ApartmentBuilding *building;
 };

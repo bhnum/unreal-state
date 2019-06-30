@@ -21,6 +21,9 @@ std::istream &operator>>(std::istream &in, Residence *&r)
 	case ResidenceType::SouthernVilla:
 		r = new SouthernVilla();
 		break;
+	case ResidenceType::ApartmentBuilding:
+		r = new ApartmentBuilding();
+		break;
 	case ResidenceType::Apartment:
 		r = new Apartment();
 		break;
@@ -28,32 +31,5 @@ std::istream &operator>>(std::istream &in, Residence *&r)
 		throw std::logic_error("");
 	}
 	r->input(in);
-	return in;
-}
-
-std::ostream &operator<<(std::ostream &out, const ApartmentBuilding &r)
-{
-	out << r.id << ',' << r.totalarea << ',' << r.baseprice << ',' << r.haselevator << ','
-		<< r.numberoffloors << ',' << r.numberofapartments << ',' << r.address << ','
-		<< r.photodata << ',';
-	return out;
-}
-
-std::istream &operator>>(std::istream &in, ApartmentBuilding &r)
-{
-	in >> r.id;
-	in.ignore();
-	in >> r.totalarea;
-	in.ignore();
-	in >> r.baseprice;
-	in.ignore();
-	in >> r.haselevator;
-	in.ignore();
-	in >> r.numberoffloors;
-	in.ignore();
-	in >> r.numberofapartments;
-	in.ignore();
-	getline(in, r.address, ',');
-	getline(in, r.photodata, ',');
 	return in;
 }
