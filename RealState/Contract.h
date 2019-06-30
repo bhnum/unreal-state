@@ -1,5 +1,7 @@
 #pragma once
+
 #include "Residence.h"
+#include "User.h"
 
 enum class ContractType
 {
@@ -56,12 +58,12 @@ public:
 	friend std::istream &operator>>(std::istream &in, Contract *&r);
 
 protected:
-	int id;
-	int residenceid;
-	int holderid;
+	int id = 0;
+	int residenceid = 0;
+	int holderid = 0;
 	Residence *residence;
 	User *holder;
-	int commissionrate;
+	int commissionrate = 0;
 
 };
 
@@ -118,7 +120,7 @@ public:
 	void set_rentduration(int _rentduration) { rentduration = _rentduration; }
 
 private:
-	int rentduration;
+	int rentduration = 0;
 
 };
 

@@ -13,6 +13,24 @@ enum class ResidenceType
 	Apartment,
 };
 
+inline static string tostring(ResidenceType t)
+{
+	switch (t)
+	{
+	case ResidenceType::NorthernVilla:
+		return "Northern villa";
+	case ResidenceType::SouthernVilla:
+		return "Southern villa";
+	case ResidenceType::ApartmentBuilding:
+		return "Apartment building";
+	case ResidenceType::Apartment:
+		return "Apartment";
+	default:
+		throw std::logic_error("");
+		break;
+	}
+}
+
 class Residence
 {
 public:
@@ -283,6 +301,22 @@ enum class ApartmentUsage
 	Regular, Business, Administrative,
 };
 
+inline static string tostring(ApartmentUsage t)
+{
+	switch (t)
+	{
+	case ApartmentUsage::Regular:
+		return "Regular";
+	case ApartmentUsage::Business:
+		return "Business";
+	case ApartmentUsage::Administrative:
+		return "Administrative";
+	default:
+		throw std::logic_error("");
+		break;
+	}
+}
+
 class Apartment : public Residence
 {
 public:
@@ -372,7 +406,7 @@ public:
 	void set_usage(ApartmentUsage _usage) { usage = _usage; }
 
 protected:
-	int buildingid;
+	int buildingid = 0;
 	ApartmentBuilding *building;
 	int floornumber = 0;
 	ApartmentUsage usage;

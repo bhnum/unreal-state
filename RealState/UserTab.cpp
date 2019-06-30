@@ -1,8 +1,9 @@
-#include "UsermanWindow.h"
+#include "UserTab.h"
 
-UsermanWindow::UsermanWindow(UserManager& userman ,QWidget *parent)
-	: QWidget(parent),userman(userman)
+UserTab::UserTab(UserManager& userManager ,QWidget *parent)
+	: QWidget(parent),userManager(userManager)
 {
+	countLabel = new QLabel("");
 
 	model = new QStandardItemModel();
 	model->setColumnCount(11);
@@ -18,42 +19,43 @@ UsermanWindow::UsermanWindow(UserManager& userman ,QWidget *parent)
 	model->setHeaderData(9, Qt::Horizontal, "Last Logout");
 	model->setHeaderData(10, Qt::Horizontal, "Actions");
 
-	usersTable = new QTableView();
-	usersTable->setModel(model);
+	table = new QTableView();
+	table->setModel(model);
 
-	QVBoxLayout *usersLayout = new QVBoxLayout();
-	usersLayout->addWidget(usersTable);
-	setLayout(usersLayout);
+	QVBoxLayout *layout = new QVBoxLayout();
+	layout->addWidget(countLabel);
+	layout->addWidget(table);
+	setLayout(layout);
 	
-	usersTable->setSortingEnabled(true);
-	usersTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	table->setSortingEnabled(true);
+	table->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	populate();
 }
 
-UsermanWindow::~UsermanWindow()
+UserTab::~UserTab()
 {
 }
 
-void UsermanWindow::action_clicked() {
+void UserTab::action_clicked() {
 	int id = sender()->property("id").value<int>();
-	User* user = userman.query_user(id);
+	User* user = userManager.query_user(id);
 	user->set_inactive(!user->get_inactive());
-	userman.save();
+	userManager.save();
 	populate();
 }
 
-void UsermanWindow::populate() {
+void UserTab::populate() {
 	
 	for (int i = 0; i < model->rowCount(); i++)
 	{
-		auto tmp = usersTable->indexWidget(model->index(i, 10));
-		usersTable->setIndexWidget(model->index(i, 10),NULL);
+		auto tmp = table->indexWidget(model->index(i, 10));
+		table->setIndexWidget(model->index(i, 10),NULL);
 		delete tmp;
 	}
 	model->removeRows(0, model->rowCount());
+
 	int row = 0;
-	
-	for each (auto i in userman.get_users())
+	for each (auto i in userManager.get_users())
 	{
 		model->appendRow(new QStandardItem());
 		model->setData(model->index(row, 0), i.get_id(), Qt::DisplayRole);
@@ -68,9 +70,10 @@ void UsermanWindow::populate() {
 		model->setData(model->index(row, 9), QString::fromStdString(puttime(i.get_lastlogouttime())), Qt::DisplayRole);
 					   
 		QPushButton *action = new QPushButton(i.get_inactive() ? "Unblock" : "Block");
-		usersTable->setIndexWidget(model->index(model->rowCount() - 1, 10), action);
-		row++;
 		action->setProperty("id", i.get_id());
+		table->setIndexWidget(model->index(model->rowCount() - 1, 10), action);
 		connect(action, SIGNAL(clicked()), this, SLOT(action_clicked()));
+		row++;
 	}
+	countLabel->setText(QString::number(model->rowCount()) + " users");
 }

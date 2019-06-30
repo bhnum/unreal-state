@@ -30,8 +30,8 @@ RegisterWindow::RegisterWindow(UserManager &userManager, QWidget *parent)
 	form->addRow("Balance: ", balanceEdit);
 	form->addRow("Birthdate: ", birthdateEdit);
 
-	cancelButton = new QPushButton("&Cancel");
-	registerButton = new QPushButton("&Register");
+	QPushButton *cancelButton = new QPushButton("&Cancel");
+	QPushButton *registerButton = new QPushButton("&Register");
 
 	QHBoxLayout *buttonsLayout = new QHBoxLayout();
 	buttonsLayout->addWidget(cancelButton);

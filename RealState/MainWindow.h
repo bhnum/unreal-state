@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
+#include <QFileDialog>
 #include <QMessageBox>
 #include <QDialog>
 #include <QWidget>
@@ -10,11 +11,16 @@
 #include <QFormLayout>
 #include <QPushButton>
 #include <QLineEdit>
+#include <QLabel>
 #include <QSpinBox>
 #include <QDateEdit>
+#include <QComboBox>
+#include <QCheckBox>
 #include <QTabWidget>
 #include <QTableView>
 #include <QStandardItemModel>
+#include <QBuffer>
+#include <QImage>
 
 class MainWindow : public QMainWindow
 {

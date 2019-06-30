@@ -22,5 +22,4 @@ private:
 	QLineEdit *usernameEdit, *passwordEdit, *nameEdit, *surnameEdit;
 	QSpinBox *balanceEdit;
 	QDateEdit *birthdateEdit;
-	QPushButton *cancelButton, *registerButton;
 };

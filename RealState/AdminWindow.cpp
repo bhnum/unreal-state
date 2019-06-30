@@ -1,11 +1,11 @@
 #include "AdminWindow.h"
 
-AdminWindow::AdminWindow(UserManager& userman,QWidget *parent)
-	: MainWindow(parent),userman(userman)
+AdminWindow::AdminWindow(UserManager& userManager, int userId, QWidget *parent)
+	: MainWindow(parent), userId(userId), userManager(userManager)
 {
 	setWindowTitle("Admin page");
 
-	UsermanWindow *usersWidget = new UsermanWindow(userman);
+	UserTab *usersWidget = new UserTab(userManager);
 	tabs = new QTabWidget();
 	tabs->addTab(usersWidget, "&Users");
 	

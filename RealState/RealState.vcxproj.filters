@@ -57,10 +57,16 @@
     <ClCompile Include="Manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UsermanWindow.cpp">
+    <ClCompile Include="UserInfoWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UserInfoWindow.cpp">
+    <ClCompile Include="ResidencesTab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UserTab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AddResidenceWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -105,10 +111,16 @@
     <QtMoc Include="AdminWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="UsermanWindow.h">
+    <QtMoc Include="UserInfoWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="UserInfoWindow.h">
+    <QtMoc Include="ResidencesTab.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="UserTab.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="AddResidenceWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

@@ -1,18 +1,19 @@
 #pragma once
-#include "ManagerAbstract.h"
+
 #include "User.h"
 #include "Residence.h"
 #include "Contract.h"
+#include "ManagerAbstract.h"
 
 class UserManager : ValManager<User>
 {
 public:
 	explicit UserManager(const string &filename = "users.txt");
 
-	virtual void validate(const User &user) override;
+ 	using ValManager<User>::load;
+	using ValManager<User>::save;
 
-	virtual void load() override;
-	virtual void save() override;
+	virtual void validate(const User &user) override;
 
 	list<User> &get_users() { return get(); }
 	void register_user(User &user) { add(user); }
@@ -34,8 +35,8 @@ class ResidenceManager : RefManager<Residence>
 public:
 	explicit ResidenceManager(const string &filename = "residences.txt");
 
-	void load();
-	void save();
+	using RefManager<Residence>::load;
+	using RefManager<Residence>::save;
 
 	list<Residence*> &get_residences() { return RefManager<Residence>::get(); }
 	void add_residence(Residence& residence) { RefManager<Residence>::add(residence); }
@@ -56,8 +57,14 @@ public:
 	explicit ContractManager(ResidenceManager &resman, UserManager &userman,
 		const string &filename = "contracts.txt");
 
-	void load();
-	void save();
+	virtual void load() override;
+	virtual void save() override;
+
+	int get_commissionrate() const { return commissionrate; }
+	void set_commissionrate(int _commissionrate) { commissionrate = _commissionrate; save(); }
+
+	ResidenceManager& get_residenceManager() const { return resman; }
+	UserManager& get_userManager() const { return userman; }
 
 	list<Contract*> &get_contracts() { return RefManager<Contract>::get(); }
 	void add_contract(Contract& contract) { RefManager<Contract>::add(contract); }
@@ -70,6 +77,7 @@ public:
 	}
 private:
 	void bind();
+	int commissionrate;
 	ResidenceManager &resman;
 	UserManager &userman;
 };

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <fstream>
 #include <functional>
 #include <string>
 #include <list>
@@ -16,6 +17,7 @@ public:
 
 	virtual void load() = 0;
 	virtual void save() = 0;
+	virtual void bind() {}
 	virtual void validate(const T &t) {}
 	virtual int generate_uid()
 	{
@@ -46,6 +48,38 @@ class ValManager : public Manager<T>
 {
 public:
 	ValManager(const string &filename = "") : Manager<T>(filename) {}
+
+	virtual void load() override
+	{
+		std::ifstream inf(filename);
+		if (inf.fail())
+			return; // First application run
+
+		while (true)
+		{
+			T t;
+			inf >> t;
+			if (inf.eof()) break;
+			if (inf.fail())
+				throw std::runtime_error("Error reading file \"" + filename + "\"");
+			data.push_back(t);
+		}
+		inf.close();
+		bind();
+	}
+
+	virtual void save() override
+	{
+		if (filename == "") return;
+
+		std::ofstream outf(filename, std::ios::trunc);
+		if (outf.fail())
+			throw std::runtime_error("Error opening file \"" + filename + "\" for writing.");
+
+		for (auto i = data.begin(); i != data.end(); i++)
+			outf << *i;
+		outf.close();
+	}
 
 	virtual list<T> &get()
 	{
@@ -123,6 +157,44 @@ public:
 	{
 		for (auto i = this->data.begin(); i != this->data.end(); i++)
 			delete *i;
+	}
+
+	virtual void load() override
+	{
+		for (auto i = this->data.begin(); i != this->data.end(); i++)
+			delete *i;
+		data.erase(data.begin(), data.end());
+
+		std::ifstream inf(filename);
+		if (inf.fail())
+			return; // First application run
+
+		while (true)
+		{
+			T* t;
+			inf >> t;
+			if (inf.eof()) break;
+			if (inf.fail())
+				throw std::runtime_error("Error reading file \"" + filename + "\"");
+			data.push_back(t);
+		}
+		inf.close();
+		bind();
+	}
+
+	void virtual save() override
+	{
+		if (filename == "") return;
+
+		std::ofstream outf(filename, std::ios::trunc);
+		if (outf.fail())
+			throw std::runtime_error("Error opening file \"" + filename + "\" for writing.");
+		for each (auto i in data)
+		{
+			outf << i << std::endl;
+		}
+
+		outf.close();
 	}
 
 	virtual list<T*> &get()
