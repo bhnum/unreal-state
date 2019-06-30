@@ -63,10 +63,10 @@
     <ClCompile Include="ResidencesTab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UserTab.cpp">
+    <ClCompile Include="AddResidenceWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AddResidenceWindow.cpp">
+    <ClCompile Include="UsersTab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -117,10 +117,10 @@
     <QtMoc Include="ResidencesTab.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="UserTab.h">
+    <QtMoc Include="AddResidenceWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="AddResidenceWindow.h">
+    <QtMoc Include="UsersTab.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

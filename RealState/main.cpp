@@ -4,6 +4,8 @@
 int main(int argc, char *argv[])
 {
 	UserManager userManager;
+	ResidenceManager resManager;
+	ContractManager conManager(resManager, userManager);
 	User* admin=userManager.query_user("admin");
 	if (admin== nullptr)
 	{
@@ -19,9 +21,11 @@ int main(int argc, char *argv[])
 		userManager.save();
 	}
 	QApplication a(argc, argv);
+	
 	//LoginWindow w(userManager);
-	UserInfoWindow w(userManager,admin->get_id());
+	//UserInfoWindow w(userManager,admin->get_id());
 	//AdminWindow w(userManager);
+	ResidencesTab w(conManager, admin->get_id());
 	w.show();
 	return a.exec();
 }

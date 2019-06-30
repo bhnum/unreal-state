@@ -54,7 +54,7 @@ public:
 	int get_commissionrate() const { return commissionrate; }
 	void set_commissionrate(int _commissionrate) { commissionrate = _commissionrate; }
 
-	friend std::ostream &operator<<(std::ostream &out, const Contract *&r);
+	friend std::ostream &operator<<(std::ostream &out, const Contract *r);
 	friend std::istream &operator>>(std::istream &in, Contract *&r);
 
 protected:

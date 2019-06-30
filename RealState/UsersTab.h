@@ -3,13 +3,13 @@
 #include "MainWindow.h"
 #include "Manager.h"
 
-class UserTab : public QWidget
+class UsersTab : public QWidget
 {
 	Q_OBJECT
 
 public:
-	UserTab(UserManager &userManager, QWidget *parent = Q_NULLPTR);
-	~UserTab();
+	UsersTab(UserManager &userManager, QWidget *parent = Q_NULLPTR);
+	~UsersTab();
 
 public slots:
 	void action_clicked();

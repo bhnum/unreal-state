@@ -1,7 +1,8 @@
 #pragma once
 
-#include <Manager.h>
-#include <MainWindow.h>
+#include "Manager.h"
+#include "MainWindow.h"
+#include "AddResidenceWindow.h"
 
 class ResidencesTab : public QWidget
 {

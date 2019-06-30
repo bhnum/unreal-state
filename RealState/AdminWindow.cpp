@@ -5,7 +5,7 @@ AdminWindow::AdminWindow(UserManager& userManager, int userId, QWidget *parent)
 {
 	setWindowTitle("Admin page");
 
-	UserTab *usersWidget = new UserTab(userManager);
+	UsersTab *usersWidget = new UsersTab(userManager);
 	tabs = new QTabWidget();
 	tabs->addTab(usersWidget, "&Users");
 	

@@ -1,6 +1,6 @@
-#include "UserTab.h"
+#include "UsersTab.h"
 
-UserTab::UserTab(UserManager& userManager ,QWidget *parent)
+UsersTab::UsersTab(UserManager& userManager ,QWidget *parent)
 	: QWidget(parent),userManager(userManager)
 {
 	countLabel = new QLabel("");
@@ -32,11 +32,11 @@ UserTab::UserTab(UserManager& userManager ,QWidget *parent)
 	populate();
 }
 
-UserTab::~UserTab()
+UsersTab::~UsersTab()
 {
 }
 
-void UserTab::action_clicked() {
+void UsersTab::action_clicked() {
 	int id = sender()->property("id").value<int>();
 	User* user = userManager.query_user(id);
 	user->set_inactive(!user->get_inactive());
@@ -44,7 +44,7 @@ void UserTab::action_clicked() {
 	populate();
 }
 
-void UserTab::populate() {
+void UsersTab::populate() {
 	
 	for (int i = 0; i < model->rowCount(); i++)
 	{

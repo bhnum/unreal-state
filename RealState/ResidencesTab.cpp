@@ -33,7 +33,7 @@ ResidencesTab::ResidencesTab(ContractManager &conManager, int userId, QWidget *p
 	table->setModel(model);
 
 	QVBoxLayout *layout = new QVBoxLayout();
-	layout->addWidget(countLabel);
+	layout->addLayout(header);
 	layout->addWidget(table);
 	setLayout(layout);
 
@@ -107,6 +107,9 @@ void ResidencesTab::search_clicked()
 
 void ResidencesTab::add_clicked()
 {
+	AddResidenceWindow *wnd = new AddResidenceWindow(resManager, this);
+	wnd->setWindowModality(Qt::ApplicationModal);
+	wnd->show();
 }
 
 void ResidencesTab::apply_clicked()

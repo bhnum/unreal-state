@@ -1,7 +1,7 @@
 #include "Contract.h"
 
 
-std::ostream &operator<<(std::ostream &out, const Contract *&r)
+std::ostream &operator<<(std::ostream &out, const Contract *r)
 {
 	out << static_cast<int>(r->get_type()) << ',';
 	r->output(out);
@@ -22,6 +22,8 @@ std::istream &operator>>(std::istream &in, Contract *&r)
 		r = new SaleContract();
 		break;
 	default:
+		if (in.eof())
+			return in;
 		throw std::logic_error("");
 	}
 	r->input(in);

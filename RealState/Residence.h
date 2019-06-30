@@ -75,7 +75,7 @@ public:
 	string get_photodata() const { return photodata; }
 	void set_photodata(string _photodata) { photodata = _photodata; }
 
-	friend std::ostream &operator<<(std::ostream &out, const Residence *&r);
+	friend std::ostream &operator<<(std::ostream &out, const Residence *r);
 	friend std::istream &operator>>(std::istream &in, Residence *&r);
 
 protected:

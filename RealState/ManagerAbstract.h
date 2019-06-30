@@ -51,6 +51,8 @@ public:
 
 	virtual void load() override
 	{
+		data.erase(data.begin(), data.end());
+
 		std::ifstream inf(filename);
 		if (inf.fail())
 			return; // First application run
@@ -189,9 +191,10 @@ public:
 		std::ofstream outf(filename, std::ios::trunc);
 		if (outf.fail())
 			throw std::runtime_error("Error opening file \"" + filename + "\" for writing.");
-		for each (auto i in data)
+		for (auto i = data.begin(); i != data.end(); i++)
 		{
-			outf << i << std::endl;
+			const T *t = *i;
+			operator<<(outf, t);
 		}
 
 		outf.close();

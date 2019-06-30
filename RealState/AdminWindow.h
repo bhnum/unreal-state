@@ -1,8 +1,9 @@
 #pragma once
 
 #include "MainWindow.h"
-#include "UserTab.h"
 #include "UserInfoWindow.h"
+#include "UsersTab.h"
+#include "ResidencesTab.h"
 #include "Manager.h"
 
 class AdminWindow : public MainWindow
