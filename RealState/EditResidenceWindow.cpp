@@ -132,11 +132,11 @@ EditResidenceWindow::EditResidenceWindow(ResidenceManager &resManager, int resId
 	form->addRow("New photo", photopathLayout);
 	form->addRow("", buttonsLayout);
 
-	setMaximumHeight(sizeHint().height());
-
 	QWidget *widget = new QWidget();
 	widget->setLayout(form);
 	setCentralWidget(widget);
+
+	setMaximumHeight(sizeHint().height());
 
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancel_clicked()));
 	connect(editButton, SIGNAL(clicked()), this, SLOT(edit_clicked()));
@@ -197,7 +197,8 @@ void EditResidenceWindow::edit_clicked()
 	{
 		Apartment *a = new Apartment();
 		r = a;
-		r->set_buildarea(buildareaEdit->value());
+		a->set_buildarea(buildareaEdit->value());
+		a->set_numberofrooms(numberofroomsEdit->value());
 		a->set_floornumber(floornumberEdit->value());
 		a->set_usage((ApartmentUsage)usagebox->currentData().value<int>());
 		Apartment& olda = dynamic_cast<Apartment&>(*old);
@@ -235,6 +236,7 @@ void EditResidenceWindow::edit_clicked()
 		mbox.exec();
 		return;
 	}
+	delete r;
 	QMessageBox mbox(this);
 	mbox.setText("Residence edited successfully.");
 	mbox.setWindowTitle("!");

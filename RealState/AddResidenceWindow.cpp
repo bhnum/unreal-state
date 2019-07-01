@@ -165,6 +165,7 @@ void AddResidenceWindow::add_clicked()
 		mbox.exec();
 		return;
 	}
+	delete r;
 	QMessageBox mbox(this);
 	mbox.setText("Residence added successfully.");
 	mbox.setWindowTitle("!");

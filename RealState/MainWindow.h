@@ -16,12 +16,14 @@
 #include <QDateEdit>
 #include <QComboBox>
 #include <QCheckBox>
+#include <QRadioButton>
 #include <QTabWidget>
 #include <QTableView>
 #include <QHeaderView>
 #include <QStandardItemModel>
 #include <QBuffer>
 #include <QImage>
+#include <QPixmap>
 
 class MainWindow : public QMainWindow
 {

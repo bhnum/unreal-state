@@ -5,6 +5,7 @@
 #include "AddResidenceWindow.h"
 #include "EditResidenceWindow.h"
 #include "InfoResidenceWindow.h"
+#include "SearchResidenceWindow.h"
 
 class ResidencesTab : public QWidget
 {
@@ -28,6 +29,7 @@ private:
 	UserManager &userManager;
 	ResidenceManager &resManager;
 	ContractManager &conManager;
+	SearchInfo searchInfo;
 
 	QLabel *countLabel;
 	QStandardItemModel *model;

@@ -116,6 +116,7 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AddApartmentWindow.cpp" />
     <ClCompile Include="AddResidenceWindow.cpp" />
     <ClCompile Include="AdminWindow.cpp" />
     <ClCompile Include="Contract.cpp" />
@@ -127,6 +128,7 @@
     <ClCompile Include="RegisterWindow.cpp" />
     <ClCompile Include="Residence.cpp" />
     <ClCompile Include="ResidencesTab.cpp" />
+    <ClCompile Include="SearchResidenceWindow.cpp" />
     <ClCompile Include="UserInfoWindow.cpp" />
     <ClCompile Include="UsersTab.cpp" />
     <ClCompile Include="utility.cpp" />
@@ -141,6 +143,7 @@
   <ItemGroup>
     <QtMoc Include="AdminWindow.h" />
     <QtMoc Include="AddResidenceWindow.h" />
+    <QtMoc Include="AddApartmentWindow.h" />
     <ClInclude Include="Contract.h" />
     <QtMoc Include="MainWindow.h" />
     <QtMoc Include="EditResidenceWindow.h" />
@@ -150,6 +153,7 @@
     <ClInclude Include="Manager.h" />
     <ClInclude Include="Residence.h" />
     <QtMoc Include="ResidencesTab.h" />
+    <QtMoc Include="SearchResidenceWindow.h" />
     <ClInclude Include="sha256.h" />
     <QtMoc Include="UsersTab.h" />
     <QtMoc Include="UserInfoWindow.h" />

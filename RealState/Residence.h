@@ -13,7 +13,7 @@ enum class ResidenceType
 	Apartment,
 };
 
-inline static string tostring(ResidenceType t)
+inline static const char *tostring(ResidenceType t)
 {
 	switch (t)
 	{
@@ -301,7 +301,7 @@ enum class ApartmentUsage
 	Regular, Business, Administrative,
 };
 
-inline static string tostring(ApartmentUsage t)
+inline static const char *tostring(ApartmentUsage t)
 {
 	switch (t)
 	{
@@ -336,13 +336,15 @@ public:
 	virtual void output(std::ostream &out) const override
 	{
 		Residence::output(out);
-		out << floornumber << ',' << buildingid << std::endl;
+		out << floornumber << ',' << static_cast<int>(usage) << ',' << buildingid << std::endl;
 	}
 
 	virtual void input(std::istream &in)
 	{
 		Residence::input(in);
 		in >> floornumber;
+		in.ignore();
+		in >> reinterpret_cast<int&>(usage);
 		in.ignore();
 		in >> buildingid;
 		in.ignore();

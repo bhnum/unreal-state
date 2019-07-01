@@ -67,10 +67,74 @@ void ResidencesTab::populate() {
 		delete tmp;
 	}
 	model->removeRows(0, model->rowCount());
-	ContractManager &conManager = this->conManager;
 
-	auto freeResidences = resManager.query_residence([&conManager](Residence &r)
+	auto filtered = resManager.query_residence([&conManager = this->conManager, &searchInfo = searchInfo](Residence &r)
 	{
+		if (!searchInfo.nvilla && r.get_type() == ResidenceType::NorthernVilla)
+			return false;
+		if (!searchInfo.svilla && r.get_type() == ResidenceType::SouthernVilla)
+			return false;
+		if (!searchInfo.building && r.get_type() == ResidenceType::ApartmentBuilding)
+			return false;
+		if (!searchInfo.apartment && r.get_type() == ResidenceType::Apartment)
+			return false;
+
+		switch (searchInfo.type)
+		{
+		case SearchInfo::Type::None:
+			break;
+		case SearchInfo::Type::MaxBasepriceMinBuildarea:
+			if (r.get_baseprice() > searchInfo.max_baseprice || r.get_buildarea() < searchInfo.min_buildarea)
+				return false;
+			break;
+		case SearchInfo::Type::OnStreet:
+			if (r.get_address().find(searchInfo.street) == string::npos)
+				return false;
+			break;
+		case SearchInfo::Type::MinApartments:
+			if (r.get_type() == ResidenceType::ApartmentBuilding) {
+				if (dynamic_cast<ApartmentBuilding&>(r).get_numberofapartments() < searchInfo.min_apartments)
+					return false;
+			}
+			else
+				return false;
+			break;
+		case SearchInfo::Type::MinApartmentSameBuildArea:
+			if (r.get_type() == ResidenceType::ApartmentBuilding) {
+				auto aps = conManager.get_residenceManager().query_residence([bArea = searchInfo.same_buildarea, bId = dynamic_cast<ApartmentBuilding&>(r).get_id()](Residence &r)
+				{
+					if (r.get_type() == ResidenceType::Apartment)
+						if (dynamic_cast<Apartment&>(r).get_buildingid() == bId)
+							return r.get_buildarea() == bArea;
+					return false;
+				});
+				if (aps.size() == 0)
+					return false;
+			}
+			else
+				return false;
+			break;
+		case SearchInfo::Type::MinRooms:
+			if (r.get_type() == ResidenceType::ApartmentBuilding) {
+				auto aps = conManager.get_residenceManager().query_residence([minRooms = searchInfo.min_rooms, bId = dynamic_cast<ApartmentBuilding&>(r).get_id()](Residence &r)
+				{
+					if (r.get_type() == ResidenceType::Apartment)
+						if (dynamic_cast<Apartment&>(r).get_buildingid() == bId)
+							return r.get_numberofrooms() == minRooms;
+					return false;
+				});
+				if (aps.size() == 0)
+					return false;
+			}
+			else
+				return false;
+			break;
+		default:
+			throw std::logic_error("");
+			break;
+		}
+
+		// Check free
 		auto contracts = conManager.query_contract([resId = r.get_id()](Contract &c)
 		{
 			return c.get_verified() && c.get_residenceid() == resId;
@@ -112,7 +176,7 @@ void ResidencesTab::populate() {
 	});
 
 	int row = 0;
-	for each (auto i in freeResidences)
+	for each (auto i in filtered)
 	{
 		model->appendRow(new QStandardItem());
 		model->setData(model->index(row, 0), i->get_id(), Qt::DisplayRole);
@@ -155,7 +219,11 @@ void ResidencesTab::populate() {
 
 void ResidencesTab::search_clicked()
 {
+	SearchResidenceWindow *wnd = new SearchResidenceWindow(searchInfo, this);
+	wnd->setWindowModality(Qt::ApplicationModal);
+	wnd->show();
 
+	connect(wnd, SIGNAL(closed()), this, SLOT(populate()));
 }
 
 void ResidencesTab::add_clicked()
@@ -174,8 +242,7 @@ void ResidencesTab::apply_clicked()
 	wnd->setWindowModality(Qt::ApplicationModal);
 	wnd->show();
 
-	if (!admin)
-		connect(wnd, SIGNAL(closed()), this, SLOT(populate()));
+	connect(wnd, SIGNAL(closed()), this, SLOT(populate()));
 }
 
 void ResidencesTab::edit_clicked()
