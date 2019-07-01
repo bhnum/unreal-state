@@ -19,8 +19,8 @@ SearchResidenceWindow::SearchResidenceWindow(SearchInfo &info, QWidget *parent)
 	same_buildareaEdit->setRange(0, 100'000'000'000'000);
 	same_buildareaEdit->setStepType(QAbstractSpinBox::StepType::AdaptiveDecimalStepType);
 	same_buildareaEdit->setValue(info.same_buildarea);
-	min_roomsEdit = new QSpinBox();
-	min_roomsEdit->setValue(info.min_rooms);
+	same_roomsEdit = new QSpinBox();
+	same_roomsEdit->setValue(info.same_rooms);
 	streetEdit = new QLineEdit(QString::fromStdString(info.street));
 
 	nvillaBox = new QCheckBox("North Villa");
@@ -64,7 +64,7 @@ SearchResidenceWindow::SearchResidenceWindow(SearchInfo &info, QWidget *parent)
 	l[4]->addWidget(same_buildareaEdit, 1);
 
 	l[5]->addWidget(new QLabel("Apartment buildings having at least one free apartment with "));
-	l[5]->addWidget(min_roomsEdit, 1);
+	l[5]->addWidget(same_roomsEdit, 1);
 	l[5]->addWidget(new QLabel(" rooms"));
 
 	l[6]->addWidget(new QLabel("Show: "));
@@ -115,7 +115,7 @@ void SearchResidenceWindow::ok_clicked()
 	info.min_buildarea = min_buildareaEdit->value();
 	info.min_apartments = min_apartmentsEdit->value();
 	info.same_buildarea = same_buildareaEdit->value();
-	info.min_rooms = min_roomsEdit->value();
+	info.same_rooms = same_roomsEdit->value();
 	info.street = streetEdit->text().toStdString();
 	info.nvilla = nvillaBox->isChecked();
 	info.svilla = svillaBox->isChecked();
@@ -134,7 +134,7 @@ void SearchResidenceWindow::type_changed()
 	min_buildareaEdit->setDisabled(true);
 	min_apartmentsEdit->setDisabled(true);
 	same_buildareaEdit->setDisabled(true);
-	min_roomsEdit->setDisabled(true);
+	same_roomsEdit->setDisabled(true);
 	streetEdit->setDisabled(true);
 
 	switch (type)
@@ -154,8 +154,8 @@ void SearchResidenceWindow::type_changed()
 	case SearchInfo::Type::MinApartmentSameBuildArea:
 		same_buildareaEdit->setEnabled(true);
 		break;
-	case SearchInfo::Type::MinRooms:
-		min_roomsEdit->setEnabled(true);
+	case SearchInfo::Type::MinApartmentSameRooms:
+		same_roomsEdit->setEnabled(true);
 		break;
 	default:
 		break;

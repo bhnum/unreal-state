@@ -114,13 +114,13 @@ void ResidencesTab::populate() {
 			else
 				return false;
 			break;
-		case SearchInfo::Type::MinRooms:
+		case SearchInfo::Type::MinApartmentSameRooms:
 			if (r.get_type() == ResidenceType::ApartmentBuilding) {
-				auto aps = conManager.get_residenceManager().query_residence([minRooms = searchInfo.min_rooms, bId = dynamic_cast<ApartmentBuilding&>(r).get_id()](Residence &r)
+				auto aps = conManager.get_residenceManager().query_residence([rooms = searchInfo.same_rooms, bId = dynamic_cast<ApartmentBuilding&>(r).get_id()](Residence &r)
 				{
 					if (r.get_type() == ResidenceType::Apartment)
 						if (dynamic_cast<Apartment&>(r).get_buildingid() == bId)
-							return r.get_numberofrooms() == minRooms;
+							return r.get_numberofrooms() == rooms;
 					return false;
 				});
 				if (aps.size() == 0)
