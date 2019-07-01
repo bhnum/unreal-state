@@ -1,6 +1,6 @@
 #include "InfoResidenceWindow.h"
 
-InfoResidenceWindow::InfoResidenceWindow(ContractManager &conManager, int userId, int resId, QWidget *parent)
+InfoResidenceWindow::InfoResidenceWindow(ContractManager &conManager, int userId, int resId, bool readonly, QWidget *parent)
 	: MainWindow(parent), conManager(conManager), userManager(conManager.get_userManager()),
 	resManager(conManager.get_residenceManager()), userId(userId), resId(resId)
 {
@@ -79,7 +79,7 @@ InfoResidenceWindow::InfoResidenceWindow(ContractManager &conManager, int userId
 	infoLayout->addLayout(detailsLayout);
 	infoLayout->addWidget(photoLabel, 1);
 
-	QPushButton *cancelButton = new QPushButton(admin ? "&OK" : "&Cancel");
+	QPushButton *cancelButton = new QPushButton((readonly || admin) ? "&OK" : "&Cancel");
 	QPushButton *rentButton = new QPushButton("Apply for &renting");
 	QPushButton *buyButton = new QPushButton("Apply for &buying");
 	QPushButton *addapartmentButton = new QPushButton("&Add apartment");
@@ -91,9 +91,9 @@ InfoResidenceWindow::InfoResidenceWindow(ContractManager &conManager, int userId
 	buttonsLayout->addWidget(buyButton);
 	buttonsLayout->addWidget(addapartmentButton);
 
-	rentButton->setVisible(!admin);
-	buyButton->setVisible(!admin);
-	addapartmentButton->setVisible(admin && type == ResidenceType::ApartmentBuilding);
+	rentButton->setVisible(!readonly && !admin);
+	buyButton->setVisible(!readonly && !admin);
+	addapartmentButton->setVisible(!readonly && admin && type == ResidenceType::ApartmentBuilding);
 
 	QVBoxLayout *layout = new QVBoxLayout();
 	layout->addLayout(infoLayout);
@@ -122,10 +122,42 @@ void InfoResidenceWindow::cancel_clicked()
 
 void InfoResidenceWindow::rent_clicked()
 {
+	AddContractInfo info;
+	info.type = ContractType::Rent;
+	(new AddContractWindow(info, this))->exec();
+	if (info.canceled)
+		return;
+
+	RentContract rent;
+	rent.set_commissionrate(conManager.get_commissionrate());
+	rent.set_holderid(userId);
+	rent.set_holder(userManager.query_user(userId));
+	rent.set_rentduration(info.duration);
+	rent.set_residenceid(resId);
+	rent.set_residence(resManager.query_residence(resId));
+	rent.set_verified(false);
+	conManager.add_contract(rent);
+	close();
 }
 
 void InfoResidenceWindow::buy_clicked()
 {
+	AddContractInfo info;
+	info.type = ContractType::Sale;
+	(new AddContractWindow(info, this))->exec();
+	if (info.canceled)
+		return;
+
+	SaleContract sale;
+	sale.set_commissionrate(conManager.get_commissionrate());
+	sale.set_holderid(userId);
+	sale.set_holder(userManager.query_user(userId));
+	sale.set_terms(info.terms);
+	sale.set_residenceid(resId);
+	sale.set_residence(resManager.query_residence(resId));
+	sale.set_verified(false);
+	conManager.add_contract(sale);
+	close();
 }
 
 void InfoResidenceWindow::addapartment_clicked()

@@ -20,6 +20,7 @@
 #include <QTabWidget>
 #include <QTableView>
 #include <QHeaderView>
+#include <QMenuBar>
 #include <QStandardItemModel>
 #include <QBuffer>
 #include <QImage>

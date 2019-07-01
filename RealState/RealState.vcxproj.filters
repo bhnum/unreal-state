@@ -81,6 +81,18 @@
     <ClCompile Include="SearchResidenceWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ContractsTab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AddContractWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CommissionRateWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UserWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="RealState.qrc">
@@ -145,6 +157,18 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="SearchResidenceWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ContractsTab.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="AddContractWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CommissionRateWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="UserWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

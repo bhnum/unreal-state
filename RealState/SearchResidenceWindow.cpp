@@ -23,9 +23,9 @@ SearchResidenceWindow::SearchResidenceWindow(SearchInfo &info, QWidget *parent)
 	same_roomsEdit->setValue(info.same_rooms);
 	streetEdit = new QLineEdit(QString::fromStdString(info.street));
 
-	nvillaBox = new QCheckBox("North Villa");
+	nvillaBox = new QCheckBox("Northern Villa");
 	nvillaBox->setChecked(info.nvilla);
-	svillaBox = new QCheckBox("North Villa");
+	svillaBox = new QCheckBox("Southern Villa");
 	svillaBox->setChecked(info.svilla);
 	buildingBox = new QCheckBox("Apartment building");
 	buildingBox->setChecked(info.building);

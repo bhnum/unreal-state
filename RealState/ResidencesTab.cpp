@@ -135,44 +135,7 @@ void ResidencesTab::populate() {
 		}
 
 		// Check free
-		auto contracts = conManager.query_contract([resId = r.get_id()](Contract &c)
-		{
-			return c.get_verified() && c.get_residenceid() == resId;
-		});
-		if (contracts.size() != 0)
-			return false;
-
-		if (r.get_type() == ResidenceType::Apartment)
-		{
-			Apartment &ap = dynamic_cast<Apartment &>(r);
-			auto bcontracts = conManager.query_contract([bId = ap.get_buildingid()](Contract &c)
-			{
-				return c.get_verified() && c.get_residenceid() == bId;
-			});
-			if (bcontracts.size() != 0)
-				return false;
-		}
-		else if (r.get_type() == ResidenceType::ApartmentBuilding)
-		{
-			ApartmentBuilding &building = dynamic_cast<ApartmentBuilding &>(r);
-			auto contractedaps = conManager.get_residenceManager().query_residence([&conManager, bId = building.get_id()](Residence &r)
-			{
-				if (r.get_type() == ResidenceType::Apartment)
-					if (dynamic_cast<Apartment&>(r).get_buildingid() == bId)
-					{
-						auto contracts = conManager.query_contract([resId = r.get_id()](Contract &c)
-						{
-							return c.get_verified() && c.get_residenceid() == resId;
-						});
-						return contracts.size() != 0;
-					}
-				return false;
-			});
-			
-			if (contractedaps.size() != 0)
-				return false;
-		}
-		return true;
+		return !conManager.is_residence_taken(r.get_id());
 	});
 
 	int row = 0;

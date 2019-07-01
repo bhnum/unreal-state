@@ -1,7 +1,8 @@
 #include "RegisterWindow.h"
 
-RegisterWindow::RegisterWindow(UserManager &userManager, QWidget *parent)
-	: MainWindow(parent), userManager(userManager)
+RegisterWindow::RegisterWindow(ContractManager &conManager, QWidget *parent)
+	: MainWindow(parent), conManager(conManager), userManager(conManager.get_userManager()),
+	resManager(conManager.get_residenceManager())
 {
 	setWindowTitle("Register");
 
@@ -81,9 +82,29 @@ void RegisterWindow::register_clicked()
 		mbox.exec();
 		return;
 	}
-	QMessageBox mbox(this);
-	mbox.setText("Register succeeded");
-	mbox.setWindowTitle("!");
-	mbox.setIcon(QMessageBox::Icon::Information);
-	mbox.exec();
+	{
+		User *user = userManager.query_user(usernameEdit->text().toLower().toStdString());
+		if (user->get_type() == UserType::Admin)
+		{
+			hide();
+			AdminWindow *wnd = new AdminWindow(conManager, user->get_id(), this);
+			wnd->show();
+			connect(wnd, SIGNAL(closed()), this, SLOT(loggedout()));
+		}
+		else
+		{
+			hide();
+			UserWindow *wnd = new UserWindow(conManager, user->get_id(), this);
+			wnd->show();
+			connect(wnd, SIGNAL(closed()), this, SLOT(loggedout()));
+		}
+		userManager.update_logintime(lastId = user->get_id());
+	}
+	close();
+}
+
+void RegisterWindow::loggedout()
+{
+	userManager.update_logouttime(lastId);
+	close();
 }

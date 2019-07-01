@@ -3,14 +3,14 @@
 #include "MainWindow.h"
 #include "Manager.h"
 
-class UserInfoWindow : public QMainWindow
+class UserInfoWindow : public MainWindow
 {
 	Q_OBJECT
 
 public:
 	UserInfoWindow(UserManager &userManager, int id, QWidget *parent = Q_NULLPTR);
 	~UserInfoWindow();
-	public slots:
+public slots:
 	void cancel_clicked();
 	void done_clicked();
 private:

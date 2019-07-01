@@ -3,13 +3,14 @@
 #include "Manager.h"
 #include "MainWindow.h"
 #include "AddApartmentWindow.h"
+#include "AddContractWindow.h"
 
 class InfoResidenceWindow : public MainWindow
 {
 	Q_OBJECT
 
 public:
-	InfoResidenceWindow(ContractManager &conManager, int userId, int resId, QWidget *parent = Q_NULLPTR);
+	InfoResidenceWindow(ContractManager &conManager, int userId, int resId, bool readonly = false, QWidget *parent = Q_NULLPTR);
 	~InfoResidenceWindow();
 
 public slots:

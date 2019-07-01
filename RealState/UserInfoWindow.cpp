@@ -1,7 +1,7 @@
 #include "UserInfoWindow.h"
 
 UserInfoWindow::UserInfoWindow(UserManager &userManager, int id, QWidget *parent)
-	: QMainWindow(parent), userManager(userManager), id(id)
+	: MainWindow(parent), userManager(userManager), id(id)
 {
 	User *user = userManager.query_user(id);
 

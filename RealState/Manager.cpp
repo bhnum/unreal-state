@@ -94,6 +94,48 @@ void ContractManager::save()
 	RefManager<Contract>::save();
 }
 
+bool ContractManager::is_residence_taken(int id)
+{
+	Residence *r = resman.query_residence(id);
+	auto contracts = query_contract([resId = id](Contract &c)
+	{
+		return c.get_verified() && c.get_residenceid() == resId;
+	});
+	if (contracts.size() != 0)
+		return true;
+
+	if (r->get_type() == ResidenceType::Apartment)
+	{
+		Apartment &ap = dynamic_cast<Apartment &>(*r);
+		auto bcontracts = query_contract([bId = ap.get_buildingid()](Contract &c)
+		{
+			return c.get_verified() && c.get_residenceid() == bId;
+		});
+		if (bcontracts.size() != 0)
+			return true;
+	}
+	else if (r->get_type() == ResidenceType::ApartmentBuilding)
+	{
+		ApartmentBuilding &building = dynamic_cast<ApartmentBuilding &>(*r);
+		auto contractedaps = resman.query_residence([this, bId = building.get_id()](Residence &r)
+		{
+			if (r.get_type() == ResidenceType::Apartment)
+				if (dynamic_cast<Apartment&>(r).get_buildingid() == bId)
+				{
+					auto contracts = query_contract([resId = r.get_id()](Contract &c)
+					{
+						return c.get_verified() && c.get_residenceid() == resId;
+					});
+					return contracts.size() != 0;
+				}
+			return false;
+		});
+		if (contractedaps.size() != 0)
+			return true;
+	}
+	return false;
+}
+
 void ContractManager::bind()
 {
 	for each (auto c in data)

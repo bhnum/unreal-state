@@ -1,7 +1,8 @@
 #include "LoginWindow.h"
 
-LoginWindow::LoginWindow(UserManager &userManager, QWidget *parent)
-	: QMainWindow(parent), userManager(userManager)
+LoginWindow::LoginWindow(ContractManager &conManager, QWidget *parent)
+	: QMainWindow(parent), conManager(conManager), userManager(conManager.get_userManager()),
+	resManager(conManager.get_residenceManager())
 {
 	setWindowTitle("Log in");
 
@@ -39,22 +40,49 @@ void LoginWindow::login_clicked()
 	bool s = userManager.authenticate_user(usernameEdit->text().toLower().toStdString(),
 		passwordEdit->text().toStdString());
 
-	QMessageBox mbox;
-	mbox.setText(s ? "Register succeeded" : "NO!");
-	mbox.setWindowTitle("!");
-	mbox.setIcon(QMessageBox::Icon::Information);
-	mbox.exec();
+	if (!s)
+	{
+		QMessageBox mbox;
+		mbox.setText("Invalid login attempt");
+		mbox.setWindowTitle("Error!");
+		mbox.setIcon(QMessageBox::Icon::Information);
+		mbox.exec();
+		return;
+	}
+
+	User *user = userManager.query_user(usernameEdit->text().toLower().toStdString());
+	if (user->get_type() == UserType::Admin)
+	{
+		hide();
+		AdminWindow *wnd = new AdminWindow(conManager, user->get_id(), this);
+		wnd->show();
+		connect(wnd, SIGNAL(closed()), this, SLOT(unhide()));
+	}
+	else
+	{
+		hide();
+		UserWindow *wnd = new UserWindow(conManager, user->get_id(), this);
+		wnd->show();
+		connect(wnd, SIGNAL(closed()), this, SLOT(unhide()));
+	}
+	userManager.update_logintime(lastId = user->get_id());
+}
+
+void LoginWindow::loggedout()
+{
+	userManager.update_logouttime(lastId);
+	show();
 }
 
 void LoginWindow::register_clicked()
 {
 	hide();
-	RegisterWindow *registerwin = new RegisterWindow(userManager, this);
+	RegisterWindow *registerwin = new RegisterWindow(conManager, this);
 	registerwin->show();
-	connect(registerwin, SIGNAL(closed()), this, SLOT(register_closed()));
+	connect(registerwin, SIGNAL(closed()), this, SLOT(unhide()));
 }
 
-void LoginWindow::register_closed()
+void LoginWindow::unhide()
 {
 	show();
 }

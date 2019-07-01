@@ -13,9 +13,9 @@ public:
 
 public slots:
 	void action_clicked();
+	void populate();
 
 private:
-	void populate();
 	UserManager &userManager;
 	QLabel *countLabel;
 	QStandardItemModel *model;

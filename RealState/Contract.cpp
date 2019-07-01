@@ -16,7 +16,7 @@ std::istream &operator>>(std::istream &in, Contract *&r)
 	switch (type)
 	{
 	case ContractType::Rent:
-		r = new RentConstract();
+		r = new RentContract();
 		break;
 	case ContractType::Sale:
 		r = new SaleContract();

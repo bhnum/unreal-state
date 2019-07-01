@@ -75,9 +75,12 @@ public:
 	{
 		return RefManager<Contract>::query(predicate);
 	}
+
+	bool is_residence_taken(int id);
+
 private:
 	void bind();
-	int commissionrate;
+	int commissionrate = 5;
 	ResidenceManager &resman;
 	UserManager &userman;
 };

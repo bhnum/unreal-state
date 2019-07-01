@@ -73,20 +73,20 @@ protected:
 	bool verified = false;
 };
 
-class RentConstract : public Contract
+class RentContract : public Contract
 {
 public:
-	RentConstract() {}
+	RentContract() {}
 
 	virtual Contract &assign(const Contract &r)
 	{
-		const RentConstract &a = dynamic_cast<const RentConstract&>(r);
+		const RentContract &a = dynamic_cast<const RentContract&>(r);
 		return *this = a;
 	}
 
 	virtual Contract *clone()
 	{
-		return new RentConstract(*this);
+		return new RentContract(*this);
 	}
 
 	virtual void output(std::ostream &out) const

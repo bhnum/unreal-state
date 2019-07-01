@@ -46,8 +46,8 @@ void UsersTab::action_clicked() {
 	populate();
 }
 
-void UsersTab::populate() {
-	
+void UsersTab::populate()
+{	
 	for (int i = 0; i < model->rowCount(); i++)
 	{
 		auto tmp = table->indexWidget(model->index(i, 10));
