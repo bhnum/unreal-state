@@ -21,7 +21,8 @@ public:
 
 	virtual void output(std::ostream &out) const
 	{
-		out << id << ',' << residenceid << ',' << holderid << ',' << commissionrate << ',';
+		out << id << ',' << residenceid << ',' << holderid
+			<< ',' << commissionrate << ',' << verified << ',';
 	}
 
 	virtual void input(std::istream &in)
@@ -33,6 +34,8 @@ public:
 		in >> holderid;
 		in.ignore();
 		in >> commissionrate;
+		in.ignore();
+		in >> verified;
 		in.ignore();
 	}
 
@@ -54,6 +57,9 @@ public:
 	int get_commissionrate() const { return commissionrate; }
 	void set_commissionrate(int _commissionrate) { commissionrate = _commissionrate; }
 
+	bool get_verified() const { return verified; }
+	void set_verified(bool _verified) { verified = _verified; }
+
 	friend std::ostream &operator<<(std::ostream &out, const Contract *r);
 	friend std::istream &operator>>(std::istream &in, Contract *&r);
 
@@ -64,7 +70,7 @@ protected:
 	Residence *residence;
 	User *holder;
 	int commissionrate = 0;
-
+	bool verified = false;
 };
 
 class RentConstract : public Contract

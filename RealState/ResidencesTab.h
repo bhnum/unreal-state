@@ -3,6 +3,8 @@
 #include "Manager.h"
 #include "MainWindow.h"
 #include "AddResidenceWindow.h"
+#include "EditResidenceWindow.h"
+#include "InfoResidenceWindow.h"
 
 class ResidencesTab : public QWidget
 {
@@ -18,9 +20,9 @@ public slots:
 	void apply_clicked();
 	void edit_clicked();
 	void delete_clicked();
+	void populate();
 
 private:
-	void populate();
 	bool admin;
 	int userId;
 	UserManager &userManager;

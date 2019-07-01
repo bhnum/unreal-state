@@ -3,32 +3,31 @@
 #include "Manager.h"
 #include "MainWindow.h"
 
-class AddResidenceWindow : public MainWindow
+class EditResidenceWindow : public MainWindow
 {
 	Q_OBJECT
 
 public:
-	AddResidenceWindow(ResidenceManager &resManager, QWidget *parent = Q_NULLPTR);
-	~AddResidenceWindow();
+	EditResidenceWindow(ResidenceManager &resManager, int resId, QWidget *parent = Q_NULLPTR);
+	~EditResidenceWindow();
 
 public slots:
 	void cancel_clicked();
-	void add_clicked();
-	void type_changed(int);
+	void edit_clicked();
 	void browse_clicked();
 
 private:
-	void refresh(ResidenceType type);
+	int resId;
+	Residence *old;
 	ResidenceManager &resManager;
 
 	QFormLayout *form;
-	QComboBox *typeBox;
 	QSpinBox *buildareaEdit, *numberofroomsEdit, *basepriceEdit,
 		*frontyardareaEdit, *backyardareaEdit, *yardareaEdit,
 		*garageareaEdit, *totalareaEdit, *numberoffloorsEdit,
-		*numberofapartmentsEdit;
+		*numberofapartmentsEdit, *floornumberEdit;
 	QLineEdit *addressEdit;
 	QLabel *photopathEdit;
 	QCheckBox *haselevatorBox;
-	QHBoxLayout *photopathLayout, *buttonsLayout;
+	QComboBox *usagebox;
 };

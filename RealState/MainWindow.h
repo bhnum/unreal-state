@@ -18,6 +18,7 @@
 #include <QCheckBox>
 #include <QTabWidget>
 #include <QTableView>
+#include <QHeaderView>
 #include <QStandardItemModel>
 #include <QBuffer>
 #include <QImage>

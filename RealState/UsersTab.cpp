@@ -22,6 +22,8 @@ UsersTab::UsersTab(UserManager& userManager ,QWidget *parent)
 	table = new QTableView();
 	table->setModel(model);
 
+	table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeMode::ResizeToContents);
+
 	QVBoxLayout *layout = new QVBoxLayout();
 	layout->addWidget(countLabel);
 	layout->addWidget(table);

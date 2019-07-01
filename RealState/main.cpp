@@ -1,5 +1,6 @@
-#include "LoginWindow.h"
 #include <QtWidgets/QApplication>
+#include "LoginWindow.h"
+#include "ResidencesTab.h"
 #include "UserInfoWindow.h"
 int main(int argc, char *argv[])
 {

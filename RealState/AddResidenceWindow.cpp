@@ -1,27 +1,27 @@
 #include "AddResidenceWindow.h"
 
 AddResidenceWindow::AddResidenceWindow(ResidenceManager &resManager, QWidget *parent)
-	: QMainWindow(parent), resManager(resManager)
+	: MainWindow(parent), resManager(resManager)
 {
 	setWindowTitle("Add Residence");
 
 	setMaximumHeight(sizeHint().height());
-	setMinimumWidth(300);
+	setMinimumWidth(400);
 
 	typeBox = new QComboBox();
 	typeBox->addItem("Nothern villa", (int)ResidenceType::NorthernVilla);
 	typeBox->addItem("Southern villa", (int)ResidenceType::SouthernVilla);
 	typeBox->addItem("Apartment building", (int)ResidenceType::ApartmentBuilding);
 
+	basepriceEdit = new QSpinBox();
+	basepriceEdit->setRange(0, 100'000'000'000'000);
+	basepriceEdit->setStepType(QAbstractSpinBox::StepType::AdaptiveDecimalStepType);
+
 	buildareaEdit = new QSpinBox();
 	buildareaEdit->setRange(0, 100'000'000'000'000);
 	buildareaEdit->setStepType(QAbstractSpinBox::StepType::AdaptiveDecimalStepType);
 
 	numberofroomsEdit = new QSpinBox();
-
-	basepriceEdit = new QSpinBox();
-	basepriceEdit->setRange(0, 100'000'000'000'000);
-	basepriceEdit->setStepType(QAbstractSpinBox::StepType::AdaptiveDecimalStepType);
 
 	frontyardareaEdit = new QSpinBox();
 	frontyardareaEdit->setRange(0, 100'000'000'000'000);
@@ -53,49 +53,47 @@ AddResidenceWindow::AddResidenceWindow(ResidenceManager &resManager, QWidget *pa
 	QPushButton *browseButton = new QPushButton("...");
 	browseButton->setMaximumWidth(30);
 	browseButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-	QHBoxLayout *photopathLayout = new QHBoxLayout();
+	photopathLayout = new QHBoxLayout();
 	photopathLayout->addWidget(photopathEdit);
 	photopathLayout->addWidget(browseButton);
-
-	form = new QFormLayout();
-	//form->itemAt(0, QFormLayout::ItemRole::FieldRole)->widget()->setVisible();
-	form->addRow("Residence type:", typeBox);
-	form->addRow("Build area:", buildareaEdit);
-	form->addRow("Number of rooms:", numberofroomsEdit);
-	form->addRow("Base price:", basepriceEdit);
-	form->addRow("Front-yard area:", frontyardareaEdit);
-	form->addRow("Backyard area:", backyardareaEdit);
-	form->addRow("Yard area:", yardareaEdit);
-	form->addRow("Garage area:", garageareaEdit);
-	form->addRow("Total area:", totalareaEdit);
-	form->addRow("Number of floors:", numberoffloorsEdit);
-	form->addRow("Number of apartments:", numberofapartmentsEdit);
-	form->addRow("", haselevatorBox);
-	form->addRow("Address", addressEdit);
-	form->addRow("Photo", photopathLayout);
 
 	QPushButton *cancelButton = new QPushButton("&Cancel");
 	QPushButton *addButton = new QPushButton("&Add");
 
-	QHBoxLayout *buttonsLayout = new QHBoxLayout();
+	buttonsLayout = new QHBoxLayout();
 	buttonsLayout->addWidget(cancelButton);
 	buttonsLayout->addWidget(addButton);
 	buttonsLayout->addSpacerItem(new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Fixed));
 
-	form->addRow("", buttonsLayout);
-
 	QWidget *widget = new QWidget();
-	widget->setLayout(form);
 	setCentralWidget(widget);
 
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancel_clicked()));
 	connect(addButton, SIGNAL(clicked()), this, SLOT(add_clicked()));
 	connect(typeBox, SIGNAL(currentIndexChanged(int)), this, SLOT(type_changed(int)));
 	connect(browseButton, SIGNAL(clicked()), this, SLOT(browse_clicked()));
+
+	form = nullptr;
+	refresh(ResidenceType::NorthernVilla);
 }
 
 AddResidenceWindow::~AddResidenceWindow()
 {
+	delete typeBox;
+	delete buildareaEdit;
+	delete basepriceEdit;
+	delete numberofroomsEdit;
+	delete frontyardareaEdit;
+	delete backyardareaEdit;
+	delete yardareaEdit;
+	delete garageareaEdit;
+	delete totalareaEdit;
+	delete numberoffloorsEdit;
+	delete numberofapartmentsEdit;
+	delete haselevatorBox;
+	delete addressEdit;
+	delete photopathLayout;
+	delete buttonsLayout;
 }
 
 void AddResidenceWindow::cancel_clicked()
@@ -112,6 +110,7 @@ void AddResidenceWindow::add_clicked()
 	{
 		NothernVilla *v = new NothernVilla();
 		r = v;
+		v->set_buildarea(buildareaEdit->value());
 		v->set_numberofrooms(numberofroomsEdit->value());
 		v->set_frontyardarea(frontyardareaEdit->value());
 		v->set_backyardarea(backyardareaEdit->value());
@@ -121,6 +120,7 @@ void AddResidenceWindow::add_clicked()
 	{
 		SouthernVilla *v = new SouthernVilla();
 		r = v;
+		v->set_buildarea(buildareaEdit->value());
 		v->set_numberofrooms(numberofroomsEdit->value());
 		v->set_yardarea(yardareaEdit->value());
 		v->set_garagearea(garageareaEdit->value());
@@ -130,6 +130,7 @@ void AddResidenceWindow::add_clicked()
 	{
 		ApartmentBuilding *a = new ApartmentBuilding();
 		r = a;
+		a->set_totalarea(totalareaEdit->value());
 		a->set_numberoffloors(numberoffloorsEdit->value());
 		a->set_numberofapartments(numberofapartmentsEdit->value());
 		a->set_haselevator(haselevatorBox->isChecked());
@@ -139,7 +140,6 @@ void AddResidenceWindow::add_clicked()
 		throw std::logic_error("");
 		break;
 	}
-	r->set_buildarea(buildareaEdit->value());
 	r->set_baseprice(basepriceEdit->value());
 	r->set_address(addressEdit->text().toStdString());
 
@@ -148,7 +148,7 @@ void AddResidenceWindow::add_clicked()
 		QImage img(photopathEdit->text());
 		QByteArray byteArray;
 		QBuffer buffer(&byteArray);
-		img.save(&buffer, "PNG"); // writes the image in PNG format inside 
+		img.save(&buffer, "PNG"); // writes the image in PNG format inside
 		r->set_photodata(byteArray.toBase64().data());
 	}
 
@@ -170,37 +170,68 @@ void AddResidenceWindow::add_clicked()
 	mbox.setWindowTitle("!");
 	mbox.setIcon(QMessageBox::Icon::Information);
 	mbox.exec();
+	close();
 }
 
 void AddResidenceWindow::type_changed(int)
 {
 	ResidenceType type = (ResidenceType)typeBox->currentData().value<int>();
-	form->itemAt(2, QFormLayout::ItemRole::LabelRole)->widget()->setVisible(type != ResidenceType::ApartmentBuilding);
-	form->itemAt(2, QFormLayout::ItemRole::FieldRole)->widget()->setVisible(type != ResidenceType::ApartmentBuilding);
+	refresh(type);
+}
 
-	form->itemAt(4, QFormLayout::ItemRole::LabelRole)->widget()->setVisible(type == ResidenceType::NorthernVilla);
-	form->itemAt(4, QFormLayout::ItemRole::FieldRole)->widget()->setVisible(type == ResidenceType::NorthernVilla);
+void AddResidenceWindow::refresh(ResidenceType type)
+{
+	typeBox->setParent(nullptr);
+	buildareaEdit->setParent(nullptr);
+	basepriceEdit->setParent(nullptr);
+	numberofroomsEdit->setParent(nullptr);
+	frontyardareaEdit->setParent(nullptr);
+	backyardareaEdit->setParent(nullptr);
+	yardareaEdit->setParent(nullptr);
+	garageareaEdit->setParent(nullptr);
+	totalareaEdit->setParent(nullptr);
+	numberoffloorsEdit->setParent(nullptr);
+	numberofapartmentsEdit->setParent(nullptr);
+	haselevatorBox->setParent(nullptr);
+	addressEdit->setParent(nullptr);
+	photopathLayout->setParent(nullptr);
+	buttonsLayout->setParent(nullptr);
 
-	form->itemAt(5, QFormLayout::ItemRole::LabelRole)->widget()->setVisible(type == ResidenceType::NorthernVilla);
-	form->itemAt(5, QFormLayout::ItemRole::FieldRole)->widget()->setVisible(type == ResidenceType::NorthernVilla);
+	form = new QFormLayout();
+	QWidget *widget = new QWidget();
+	widget->setLayout(form);
+	setCentralWidget(widget);
 
-	form->itemAt(6, QFormLayout::ItemRole::LabelRole)->widget()->setVisible(type == ResidenceType::SouthernVilla);
-	form->itemAt(6, QFormLayout::ItemRole::FieldRole)->widget()->setVisible(type == ResidenceType::SouthernVilla);
+	form->addRow("Residence type:", typeBox);
+	form->addRow("Base price:", basepriceEdit);
+	if (type != ResidenceType::ApartmentBuilding)
+	{
+		form->addRow("Build area:", buildareaEdit);
+		form->addRow("Number of rooms:", numberofroomsEdit);
+	}
+	if (type == ResidenceType::NorthernVilla)
+	{
+		form->addRow("Front-yard area:", frontyardareaEdit);
+		form->addRow("Backyard area:", backyardareaEdit);
+	}
+	else if (type == ResidenceType::SouthernVilla)
+	{
+		form->addRow("Yard area:", yardareaEdit);
+		form->addRow("Garage area:", garageareaEdit);
+	}
+	else if (type == ResidenceType::ApartmentBuilding)
+	{
+		form->addRow("Total area:", totalareaEdit);
+		form->addRow("Number of floors:", numberoffloorsEdit);
+		form->addRow("Number of apartments:", numberofapartmentsEdit);
+		form->addRow("", haselevatorBox);
+	}
+	form->addRow("Address", addressEdit);
+	form->addRow("Photo", photopathLayout);
 
-	form->itemAt(7, QFormLayout::ItemRole::LabelRole)->widget()->setVisible(type == ResidenceType::SouthernVilla);
-	form->itemAt(7, QFormLayout::ItemRole::FieldRole)->widget()->setVisible(type == ResidenceType::SouthernVilla);
+	form->addRow("", buttonsLayout);
 
-	form->itemAt(9, QFormLayout::ItemRole::LabelRole)->widget()->setVisible(type == ResidenceType::ApartmentBuilding);
-	form->itemAt(9, QFormLayout::ItemRole::FieldRole)->widget()->setVisible(type == ResidenceType::ApartmentBuilding);
-
-	form->itemAt(10, QFormLayout::ItemRole::LabelRole)->widget()->setVisible(type == ResidenceType::ApartmentBuilding);
-	form->itemAt(10, QFormLayout::ItemRole::FieldRole)->widget()->setVisible(type == ResidenceType::ApartmentBuilding);
-
-	form->itemAt(11, QFormLayout::ItemRole::LabelRole)->widget()->setVisible(type == ResidenceType::ApartmentBuilding);
-	form->itemAt(11, QFormLayout::ItemRole::FieldRole)->widget()->setVisible(type == ResidenceType::ApartmentBuilding);
-
-	form->itemAt(12, QFormLayout::ItemRole::LabelRole)->widget()->setVisible(type == ResidenceType::ApartmentBuilding);
-	form->itemAt(12, QFormLayout::ItemRole::FieldRole)->widget()->setVisible(type == ResidenceType::ApartmentBuilding);
+	setMaximumHeight(sizeHint().height());
 }
 
 void AddResidenceWindow::browse_clicked()

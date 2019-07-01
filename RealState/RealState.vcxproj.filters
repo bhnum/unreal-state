@@ -69,6 +69,12 @@
     <ClCompile Include="UsersTab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EditResidenceWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InfoResidenceWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="RealState.qrc">
@@ -121,6 +127,12 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="UsersTab.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="EditResidenceWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="InfoResidenceWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
