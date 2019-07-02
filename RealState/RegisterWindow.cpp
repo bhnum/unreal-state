@@ -1,8 +1,7 @@
 #include "RegisterWindow.h"
 
-RegisterWindow::RegisterWindow(ContractManager &conManager, QWidget *parent)
-	: MainWindow(parent), conManager(conManager), userManager(conManager.get_userManager()),
-	resManager(conManager.get_residenceManager())
+RegisterWindow::RegisterWindow(UserManager &userManager, LoginInfo &info, QWidget *parent)
+	: MainWindow(parent), userManager(userManager), info(info)
 {
 	setWindowTitle("Register");
 
@@ -47,7 +46,6 @@ RegisterWindow::RegisterWindow(ContractManager &conManager, QWidget *parent)
 
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancel_clicked()));
 	connect(registerButton, SIGNAL(clicked()), this, SLOT(register_clicked()));
-
 }
 
 RegisterWindow::~RegisterWindow()
@@ -82,29 +80,7 @@ void RegisterWindow::register_clicked()
 		mbox.exec();
 		return;
 	}
-	{
-		User *user = userManager.query_user(usernameEdit->text().toLower().toStdString());
-		if (user->get_type() == UserType::Admin)
-		{
-			hide();
-			AdminWindow *wnd = new AdminWindow(conManager, user->get_id(), this);
-			wnd->show();
-			connect(wnd, SIGNAL(closed()), this, SLOT(loggedout()));
-		}
-		else
-		{
-			hide();
-			UserWindow *wnd = new UserWindow(conManager, user->get_id(), this);
-			wnd->show();
-			connect(wnd, SIGNAL(closed()), this, SLOT(loggedout()));
-		}
-		userManager.update_logintime(lastId = user->get_id());
-	}
-	close();
-}
-
-void RegisterWindow::loggedout()
-{
-	userManager.update_logouttime(lastId);
+	info.exited = false;
+	info.user = userManager.query_user(user.get_id());
 	close();
 }

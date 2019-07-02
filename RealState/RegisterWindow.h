@@ -1,28 +1,30 @@
 #pragma once
 
-#include "MainWindow.h"
-#include "AdminWindow.h"
-#include "UserWindow.h"
 #include "Manager.h"
+#include "MainWindow.h"
+
+struct LoginInfo
+{
+	bool exited = true;
+	User *user = nullptr;
+};
 
 class RegisterWindow : public MainWindow
 {
 	Q_OBJECT
 
 public:
-	RegisterWindow(ContractManager &conManager, QWidget *parent = Q_NULLPTR);
+	RegisterWindow(UserManager &userManager, LoginInfo &info, QWidget *parent = Q_NULLPTR);
 	~RegisterWindow();
 
 public slots:
 	void cancel_clicked();
 	void register_clicked();
-	void loggedout();
 
 private:
 	int lastId;
+	LoginInfo &info;
 	UserManager &userManager;
-	ResidenceManager &resManager;
-	ContractManager &conManager;
 
 	QFormLayout *form;
 	QLineEdit *usernameEdit, *passwordEdit, *nameEdit, *surnameEdit;

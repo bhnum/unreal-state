@@ -93,7 +93,7 @@ InfoResidenceWindow::InfoResidenceWindow(ContractManager &conManager, int userId
 
 	rentButton->setVisible(!readonly && !admin);
 	buyButton->setVisible(!readonly && !admin);
-	addapartmentButton->setVisible(!readonly && admin && type == ResidenceType::ApartmentBuilding);
+	addapartmentButton->setVisible(!readonly && admin && (type == ResidenceType::ApartmentBuilding));
 
 	QVBoxLayout *layout = new QVBoxLayout();
 	layout->addLayout(infoLayout);
@@ -128,15 +128,33 @@ void InfoResidenceWindow::rent_clicked()
 	if (info.canceled)
 		return;
 
+	Residence *res = resManager.query_residence(resId);
+	User *user = userManager.query_user(userId);
+	User *admin = userManager.query_user("admin");
+
 	RentContract rent;
 	rent.set_commissionrate(conManager.get_commissionrate());
-	rent.set_holderid(userId);
-	rent.set_holder(userManager.query_user(userId));
 	rent.set_rentduration(info.duration);
+	rent.set_holderid(userId);
+	rent.set_holder(user);
 	rent.set_residenceid(resId);
-	rent.set_residence(resManager.query_residence(resId));
+	rent.set_residence(res);
 	rent.set_verified(false);
+
+	if (user->get_balance() < rent.get_finalprice())
+	{
+		QMessageBox mbox(this);
+		mbox.setText("You do not have enouph balance.");
+		mbox.setWindowTitle("Error!");
+		mbox.setIcon(QMessageBox::Icon::Warning);
+		mbox.exec();
+		return;
+	}
+
 	conManager.add_contract(rent);
+	user->set_balance(user->get_balance() - rent.get_finalprice());
+	admin->set_balance(admin->get_balance() + rent.get_finalprice());
+	
 	close();
 }
 
@@ -148,6 +166,10 @@ void InfoResidenceWindow::buy_clicked()
 	if (info.canceled)
 		return;
 
+	Residence *res = resManager.query_residence(resId);
+	User *user = userManager.query_user(userId);
+	User *admin = userManager.query_user("admin");
+
 	SaleContract sale;
 	sale.set_commissionrate(conManager.get_commissionrate());
 	sale.set_holderid(userId);
@@ -156,7 +178,20 @@ void InfoResidenceWindow::buy_clicked()
 	sale.set_residenceid(resId);
 	sale.set_residence(resManager.query_residence(resId));
 	sale.set_verified(false);
+
+	if (user->get_balance() < sale.get_finalprice())
+	{
+		QMessageBox mbox(this);
+		mbox.setText("You do not have enouph balance.");
+		mbox.setWindowTitle("Error!");
+		mbox.setIcon(QMessageBox::Icon::Warning);
+		mbox.exec();
+		return;
+	}
 	conManager.add_contract(sale);
+	user->set_balance(user->get_balance() - sale.get_finalprice());
+	admin->set_balance(admin->get_balance() + sale.get_finalprice());
+
 	close();
 }
 
@@ -174,7 +209,7 @@ void InfoResidenceWindow::addapartment_clicked()
 	if (aps.size() >= dynamic_cast<ApartmentBuilding&>(*resManager.query_residence(resId)).get_numberofapartments())
 	{
 		QMessageBox mbox(this);
-		mbox.setText("Ther is no available apartments for this building.");
+		mbox.setText("There is no available apartments for this building.");
 		mbox.setWindowTitle("Error!");
 		mbox.setIcon(QMessageBox::Icon::Warning);
 		mbox.exec();

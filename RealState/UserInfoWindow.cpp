@@ -87,4 +87,5 @@ void UserInfoWindow::done_clicked()
 	mbox.setWindowTitle("Informaion changed!");
 	mbox.setIcon(QMessageBox::Icon::Information);
 	mbox.exec();
+	close();
 }

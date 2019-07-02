@@ -17,7 +17,7 @@ public:
 	~UserWindow();
 
 	public slots:
-	void changeinfo_clicked(QAction*);
+	void changeinfo_clicked();
 	void tab_changed(int index);
 
 private:

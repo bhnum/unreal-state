@@ -201,7 +201,7 @@ void ResidencesTab::add_clicked()
 void ResidencesTab::apply_clicked()
 {
 	int resId = sender()->property("id").value<int>();
-	InfoResidenceWindow *wnd = new InfoResidenceWindow(conManager, userId, resId, this);
+	InfoResidenceWindow *wnd = new InfoResidenceWindow(conManager, userId, resId, false, this);
 	wnd->setWindowModality(Qt::ApplicationModal);
 	wnd->show();
 

@@ -15,8 +15,33 @@ public:
 	explicit Manager(const string &filename = "") : filename(filename) {}
 	virtual ~Manager() {}
 
-	virtual void load() = 0;
-	virtual void save() = 0;
+	virtual void load()
+	{
+		std::ifstream inf(filename);
+		if (inf.fail())
+			return; // First application run
+
+		load_data(inf);
+
+		inf.close();
+		bind();
+	}
+
+	virtual void save()
+	{
+		if (filename == "") return;
+
+		std::ofstream outf(filename, std::ios::trunc);
+		if (outf.fail())
+			throw std::runtime_error("Error opening file \"" + filename + "\" for writing.");
+
+		save_data(outf);
+
+		outf.close();
+	}
+
+	virtual void load_data(std::ifstream &inf) = 0;
+	virtual void save_data(std::ofstream &outf) = 0;
 	virtual void bind() {}
 	virtual void validate(const T &t) {}
 	virtual int generate_uid()
@@ -49,13 +74,9 @@ class ValManager : public Manager<T>
 public:
 	ValManager(const string &filename = "") : Manager<T>(filename) {}
 
-	virtual void load() override
+	virtual void load_data(std::ifstream &inf)
 	{
 		data.erase(data.begin(), data.end());
-
-		std::ifstream inf(filename);
-		if (inf.fail())
-			return; // First application run
 
 		while (true)
 		{
@@ -66,21 +87,12 @@ public:
 				throw std::runtime_error("Error reading file \"" + filename + "\"");
 			data.push_back(t);
 		}
-		inf.close();
-		bind();
 	}
 
-	virtual void save() override
+	virtual void save_data(std::ofstream &outf)
 	{
-		if (filename == "") return;
-
-		std::ofstream outf(filename, std::ios::trunc);
-		if (outf.fail())
-			throw std::runtime_error("Error opening file \"" + filename + "\" for writing.");
-
 		for (auto i = data.begin(); i != data.end(); i++)
 			outf << *i;
-		outf.close();
 	}
 
 	virtual list<T> &get()
@@ -161,15 +173,11 @@ public:
 			delete *i;
 	}
 
-	virtual void load() override
+	virtual void load_data(std::ifstream &inf)
 	{
 		for (auto i = this->data.begin(); i != this->data.end(); i++)
 			delete *i;
 		data.erase(data.begin(), data.end());
-
-		std::ifstream inf(filename);
-		if (inf.fail())
-			return; // First application run
 
 		while (true)
 		{
@@ -180,24 +188,15 @@ public:
 				throw std::runtime_error("Error reading file \"" + filename + "\"");
 			data.push_back(t);
 		}
-		inf.close();
-		bind();
 	}
 
-	void virtual save() override
+	virtual void save_data(std::ofstream &outf)
 	{
-		if (filename == "") return;
-
-		std::ofstream outf(filename, std::ios::trunc);
-		if (outf.fail())
-			throw std::runtime_error("Error opening file \"" + filename + "\" for writing.");
 		for (auto i = data.begin(); i != data.end(); i++)
 		{
 			const T *t = *i;
 			operator<<(outf, t);
 		}
-
-		outf.close();
 	}
 
 	virtual list<T*> &get()

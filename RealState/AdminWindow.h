@@ -17,8 +17,8 @@ public:
 	~AdminWindow();
 
 public slots:
-	void crateedit_clicked(QAction*);
-	void changeinfo_clicked(QAction*);
+	void crateedit_clicked();
+	void changeinfo_clicked();
 	void changeinfo_closed();
 	void tab_changed(int index);
 

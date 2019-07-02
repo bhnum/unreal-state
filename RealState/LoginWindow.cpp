@@ -1,8 +1,7 @@
 #include "LoginWindow.h"
 
-LoginWindow::LoginWindow(ContractManager &conManager, QWidget *parent)
-	: QMainWindow(parent), conManager(conManager), userManager(conManager.get_userManager()),
-	resManager(conManager.get_residenceManager())
+LoginWindow::LoginWindow(UserManager &userManager, LoginInfo &info, QWidget *parent)
+	: QMainWindow(parent), userManager(userManager), info(info)
 {
 	setWindowTitle("Log in");
 
@@ -49,40 +48,24 @@ void LoginWindow::login_clicked()
 		mbox.exec();
 		return;
 	}
-
-	User *user = userManager.query_user(usernameEdit->text().toLower().toStdString());
-	if (user->get_type() == UserType::Admin)
-	{
-		hide();
-		AdminWindow *wnd = new AdminWindow(conManager, user->get_id(), this);
-		wnd->show();
-		connect(wnd, SIGNAL(closed()), this, SLOT(unhide()));
-	}
-	else
-	{
-		hide();
-		UserWindow *wnd = new UserWindow(conManager, user->get_id(), this);
-		wnd->show();
-		connect(wnd, SIGNAL(closed()), this, SLOT(unhide()));
-	}
-	userManager.update_logintime(lastId = user->get_id());
-}
-
-void LoginWindow::loggedout()
-{
-	userManager.update_logouttime(lastId);
-	show();
+	info.exited = false;
+	info.user = userManager.query_user(usernameEdit->text().toLower().toStdString());
+	close();
+	return;
 }
 
 void LoginWindow::register_clicked()
 {
 	hide();
-	RegisterWindow *registerwin = new RegisterWindow(conManager, this);
+	RegisterWindow *registerwin = new RegisterWindow(userManager, info, this);
 	registerwin->show();
-	connect(registerwin, SIGNAL(closed()), this, SLOT(unhide()));
+	connect(registerwin, SIGNAL(closed()), this, SLOT(register_closed()));
 }
 
-void LoginWindow::unhide()
+void LoginWindow::register_closed()
 {
-	show();
+	if (info.exited)
+		show();
+	else
+		close();
 }

@@ -5,9 +5,10 @@ AdminWindow::AdminWindow(ContractManager &conManager, int userId, QWidget *paren
 	resManager(conManager.get_residenceManager()), userId(userId)
 {
 	setWindowTitle("Admin page");
+	resize(1000, 500);
 
-	QMenu *editcrateButton = menuBar()->addMenu("Edit commission &rate");
-	QMenu *changeinfoButton = menuBar()->addMenu("Edit user &information");
+	QAction *editcrateButton = menuBar()->addAction("Edit commission &rate");
+	QAction *changeinfoButton = menuBar()->addAction("Edit user &information");
 
 	tabs = new QTabWidget();
 
@@ -28,21 +29,21 @@ AdminWindow::AdminWindow(ContractManager &conManager, int userId, QWidget *paren
 	setCentralWidget(widget);
 
 	connect(tabs, SIGNAL(currentChanged(int)), this, SLOT(tab_changed(int)));
-	connect(editcrateButton, SIGNAL(triggered(QAction*)), this, SLOT(crateedit_clicked()));
-	connect(changeinfoButton, SIGNAL(triggered(QAction*)), this, SLOT(changeinfo_clicked()));
+	connect(editcrateButton, SIGNAL(triggered()), this, SLOT(crateedit_clicked()));
+	connect(changeinfoButton, SIGNAL(triggered()), this, SLOT(changeinfo_clicked()));
 }
 
 AdminWindow::~AdminWindow()
 {
 }
 
-void AdminWindow::crateedit_clicked(QAction *)
+void AdminWindow::crateedit_clicked()
 {
 	(new CommissionRateWindow(conManager, this))->exec();
 	consTab->populate();
 }
 
-void AdminWindow::changeinfo_clicked(QAction *)
+void AdminWindow::changeinfo_clicked()
 {
 	auto wnd = new UserInfoWindow(userManager, userId, this);
 	wnd->setWindowModality(Qt::ApplicationModal);

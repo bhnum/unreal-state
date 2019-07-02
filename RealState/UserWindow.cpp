@@ -5,8 +5,9 @@ UserWindow::UserWindow(ContractManager &conManager, int userId, QWidget *parent)
 	resManager(conManager.get_residenceManager()), userId(userId)
 {
 	setWindowTitle("User page");
+	resize(1000, 500);
 
-	QMenu *changeinfoButton = menuBar()->addMenu("Edit user &information");
+	QAction *changeinfoButton = menuBar()->addAction("Edit user &information");
 
 	tabs = new QTabWidget();
 
@@ -24,14 +25,14 @@ UserWindow::UserWindow(ContractManager &conManager, int userId, QWidget *parent)
 	setCentralWidget(widget);
 
 	connect(tabs, SIGNAL(currentChanged(int)), this, SLOT(tab_changed(int)));
-	connect(changeinfoButton, SIGNAL(triggered(QAction*)), this, SLOT(changeinfo_clicked()));
+	connect(changeinfoButton, SIGNAL(triggered()), this, SLOT(changeinfo_clicked()));
 }
 
 UserWindow::~UserWindow()
 {
 }
 
-void UserWindow::changeinfo_clicked(QAction *)
+void UserWindow::changeinfo_clicked()
 {
 	auto wnd = new UserInfoWindow(userManager, userId, this);
 	wnd->setWindowModality(Qt::ApplicationModal);

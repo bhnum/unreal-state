@@ -68,8 +68,10 @@ void UsersTab::populate()
 		model->setData(model->index(row, 5), i.get_balance(), Qt::DisplayRole);
 		model->setData(model->index(row, 6), QString::fromStdString(putdate(i.get_birthdate())), Qt::DisplayRole);
 		model->setData(model->index(row, 7), i.get_inactive() ? "Yes" : "No", Qt::DisplayRole);
-		model->setData(model->index(row, 8), QString::fromStdString(puttime(i.get_lastlogintime())), Qt::DisplayRole);
-		model->setData(model->index(row, 9), QString::fromStdString(puttime(i.get_lastlogouttime())), Qt::DisplayRole);
+		model->setData(model->index(row, 8), i.get_lastlogintime() == time_point() ? "Never" : QString::fromStdString(puttime(i.get_lastlogintime())), Qt::DisplayRole);
+		model->setData(model->index(row, 8), i.get_lastlogintime() == time_point() ? "Never" : QString::fromStdString(puttime(i.get_lastlogintime()) + " (" + puttimediff(i.get_lastlogintime()) + ")"), Qt::ToolTipRole);
+		model->setData(model->index(row, 9), i.get_lastlogouttime() == time_point() ? "Never" : QString::fromStdString(puttime(i.get_lastlogouttime())), Qt::DisplayRole);
+		model->setData(model->index(row, 9), i.get_lastlogouttime() == time_point() ? "Never" : QString::fromStdString(puttime(i.get_lastlogouttime()) + " (" + puttimediff(i.get_lastlogouttime()) + ")"), Qt::ToolTipRole);
 					   
 		QPushButton *action = new QPushButton(i.get_inactive() ? "Unblock" : "Block");
 		action->setProperty("id", i.get_id());

@@ -1,7 +1,8 @@
 #include <QtWidgets/QApplication>
 #include "LoginWindow.h"
-#include "ResidencesTab.h"
-#include "UserInfoWindow.h"
+#include "AdminWindow.h"
+#include "UserWindow.h"
+
 int main(int argc, char *argv[])
 {
 	UserManager userManager;
@@ -24,7 +25,31 @@ int main(int argc, char *argv[])
 	}
 
 	QApplication a(argc, argv);
-	LoginWindow w(conManager);
-	w.show();
-	return a.exec();
+	while (true)
+	{
+		LoginInfo login = LoginInfo();
+		LoginWindow loginWindow(userManager, login);
+		loginWindow.show();
+		a.exec();
+
+		if (login.exited)
+			break;
+
+		MainWindow *wnd;
+		if (login.user->get_type() == UserType::Admin)
+		{
+			wnd = new AdminWindow(conManager, login.user->get_id());
+		}
+		else
+		{
+			wnd = new UserWindow(conManager, login.user->get_id());
+		}
+		wnd->setWindowModality(Qt::ApplicationModal);
+		wnd->show();
+		userManager.update_logintime(login.user->get_id());
+		a.exec();
+		userManager.update_logouttime(login.user->get_id());
+	}
+
+	return 0;
 }

@@ -52,6 +52,12 @@ ContractsTab::~ContractsTab()
 void ContractsTab::cancel_clicked()
 {
 	int id = sender()->property("id").value<int>();
+	
+	Contract *c = conManager.query_contract(id);
+	User *admin = userManager.query_user("admin");
+	c->get_holder()->set_balance(c->get_holder()->get_balance() + c->get_finalprice());
+	admin->set_balance(admin->get_balance() - c->get_finalprice());
+	userManager.save();
 	conManager.delete_contract(id);
 	populate();
 }
@@ -122,10 +128,10 @@ void ContractsTab::populate()
 		model->setData(model->index(row, 0), i->get_id(), Qt::DisplayRole);
 		model->setData(model->index(row, 1), QString::fromStdString(tostring(i->get_residence()->get_type())), Qt::DisplayRole);
 		model->setData(model->index(row, 2), i->get_commissionrate(), Qt::DisplayRole);
-		model->setData(model->index(row, 3), ri->get_rentduration(), Qt::DisplayRole);
-		model->setData(model->index(row, 4), ri->get_rent(), Qt::DisplayRole);
-		model->setData(model->index(row, 5), ri->get_mortgage(), Qt::DisplayRole);
-		model->setData(model->index(row, 6), QString::fromStdString(si->get_terms()), Qt::DisplayRole);
+		model->setData(model->index(row, 3), ri == nullptr ? 0 : ri->get_rentduration(), Qt::DisplayRole);
+		model->setData(model->index(row, 4), ri == nullptr ? 0 : ri->get_rent(), Qt::DisplayRole);
+		model->setData(model->index(row, 5), ri == nullptr ? 0 : ri->get_mortgage(), Qt::DisplayRole);
+		model->setData(model->index(row, 6), si == nullptr ? "" : QString::fromStdString(si->get_terms()), Qt::DisplayRole);
 		model->setData(model->index(row, 7), i->get_verified() ? "Accepted" : "Pending", Qt::DisplayRole);
 		model->setData(model->index(row, 8), i->get_finalprice(), Qt::DisplayRole);
 

@@ -48,7 +48,7 @@ public:
 		return RefManager<Residence>::query(predicate); 
 	}
 private:
-	void bind();
+	virtual void bind() override;
 };
 
 class ContractManager : RefManager<Contract>
@@ -57,8 +57,11 @@ public:
 	explicit ContractManager(ResidenceManager &resman, UserManager &userman,
 		const string &filename = "contracts.txt");
 
-	virtual void load() override;
-	virtual void save() override;
+	using RefManager<Contract>::load;
+	using RefManager<Contract>::save;
+
+	virtual void load_data(std::ifstream &inf) override;
+	virtual void save_data(std::ofstream &outf) override;
 
 	int get_commissionrate() const { return commissionrate; }
 	void set_commissionrate(int _commissionrate) { commissionrate = _commissionrate; save(); }
@@ -79,7 +82,7 @@ public:
 	bool is_residence_taken(int id);
 
 private:
-	void bind();
+	virtual void bind() override;
 	int commissionrate = 5;
 	ResidenceManager &resman;
 	UserManager &userman;

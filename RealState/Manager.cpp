@@ -71,27 +71,17 @@ ContractManager::ContractManager(ResidenceManager &resman, UserManager &userman,
 	load();
 }
 
-void ContractManager::load()
+void ContractManager::load_data(std::ifstream &inf)
 {
-	std::ifstream inf(filename);
-	if (inf.fail())
-		return; // First application run
 	inf >> commissionrate;
 	inf.ignore();
-	inf.close();
-	RefManager<Contract>::load();
+	RefManager<Contract>::load_data(inf);
 }
 
-void ContractManager::save()
+void ContractManager::save_data(std::ofstream &outf)
 {
-	if (filename == "") return;
-
-	std::ofstream outf(filename, std::ios::trunc);
-	if (outf.fail())
-		throw std::runtime_error("Error opening file \"" + filename + "\" for writing.");
 	outf << commissionrate << std::endl;
-	outf.close();
-	RefManager<Contract>::save();
+	RefManager<Contract>::save_data(outf);
 }
 
 bool ContractManager::is_residence_taken(int id)
