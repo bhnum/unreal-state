@@ -59,6 +59,8 @@ void ResidenceManager::bind()
 		{
 			Apartment &a = dynamic_cast<Apartment&>(*r);
 			ApartmentBuilding &b = dynamic_cast<ApartmentBuilding&>(*query_residence(a.get_buildingid()));
+			if (&b == nullptr)
+				throw std::runtime_error("Corrupted file!");
 			a.set_building(&b);
 		}
 	}
@@ -132,6 +134,8 @@ void ContractManager::bind()
 	{
 		Residence *r = resman.query_residence(c->get_residenceid());
 		User *u = userman.query_user(c->get_holderid());
+		if (r == nullptr || u == nullptr)
+			throw std::runtime_error("Corrupted file!");
 		c->set_residence(r);
 		c->set_holder(u);
 	}
