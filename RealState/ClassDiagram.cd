@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Contract" Collapsed="true">
+    <Position X="12.75" Y="5.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ACEBAAAAAIVEAAAQAAAAQAAECBAAEJAACCIYEAAAQwA=</HashCode>
+      <FileName>Contract.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="residence" />
+      <Field Name="holder" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="RentContract" Collapsed="true">
+    <Position X="14.25" Y="8.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAEIAEAAABAQBCACAAAABACAAAAEAAAAAA=</HashCode>
+      <FileName>Contract.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SaleContract" Collapsed="true">
+    <Position X="11.25" Y="8.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAgEARAAABAAQAAACAAAABAAAAAAEAAAAAA=</HashCode>
+      <FileName>Contract.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="User" Collapsed="true">
+    <Position X="16.75" Y="5.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ICEFAAAAIgEAAAEIBAAGQAEMCBBFBAAAgiAAGIAAwog=</HashCode>
+      <FileName>User.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Residence" Collapsed="true">
+    <Position X="4" Y="5.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAERAEAAAAEEAAEQEAAEQAAECAACBBQAAAAAEAEgUgA=</HashCode>
+      <FileName>Residence.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IndipendentResidence" Collapsed="true">
+    <Position X="5.75" Y="7" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAACIICJBAAAAAAAAAAAAA=</HashCode>
+      <FileName>Residence.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NothernVilla" Collapsed="true">
+    <Position X="8.5" Y="8.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAARAAAAAAAEAQAAAAUAQAAACAgAABAAAAoQEAAAAAA=</HashCode>
+      <FileName>Residence.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SouthernVilla" Collapsed="true">
+    <Position X="5.75" Y="8.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAARAAAAIAAEAAAAAAEAQAAACACCABgAAAAAEACAAAE=</HashCode>
+      <FileName>Residence.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ApartmentBuilding" Collapsed="true">
+    <Position X="3" Y="8.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EQERIAAAAgAEAAIAAQABYAAACQAAABAACAAAEAAAAAA=</HashCode>
+      <FileName>Residence.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Apartment" Collapsed="true">
+    <Position X="0.5" Y="7" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EAARIAAAAACEAAAIAAQAQAACCAACBBBBARAAUAAAAQA=</HashCode>
+      <FileName>Residence.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="building" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="UserManager" Collapsed="true">
+    <Position X="16.75" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>IABEIICAAACAAAAgAAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Manager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResidenceManager" Collapsed="true">
+    <Position X="4" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAIAAAABQAAAAQAAAAAAAAAAAIAAACAAA=</HashCode>
+      <FileName>Manager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ContractManager" Collapsed="true">
+    <Position X="12.75" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAABICAABIAAAAAEQCAEAAAAABACAAAAEKAQAAAAAAA=</HashCode>
+      <FileName>Manager.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="resman" />
+      <Field Name="userman" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Manager&lt;T&gt;" Collapsed="true">
+    <Position X="10.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAIIBAAICAAAAEAAAAAAAAAAAABAAQAIAIAgACgAA=</HashCode>
+      <FileName>ManagerAbstract.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ValManager&lt;T&gt;" Collapsed="true">
+    <Position X="16.75" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAACAAAAAAAEAAAAQAAAAAAAAAAAAIAYAgACAAA=</HashCode>
+      <FileName>ManagerAbstract.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RefManager&lt;T&gt;" Collapsed="true">
+    <Position X="8.25" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAEAAAAQAAAAAAAAAAAAIAYAoACACA=</HashCode>
+      <FileName>ManagerAbstract.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
