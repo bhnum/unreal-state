@@ -221,6 +221,13 @@ void ResidencesTab::edit_clicked()
 void ResidencesTab::delete_clicked()
 {
 	int id = sender()->property("id").value<int>();
+
+	if (conManager.is_residence_taken(id, false))
+	{
+		QMessageBox::warning(this, "Prompt", "There are pending contracts for this residence. Please decline the corresponding contracts to be able to delete this residence.");
+		return;
+	}
+
 	resManager.delete_residence(id);
 	populate();
 }

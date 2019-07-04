@@ -79,7 +79,7 @@ public:
 		return RefManager<Contract>::query(predicate);
 	}
 
-	bool is_residence_taken(int id);
+	bool is_residence_taken(int id, bool be_verified = true);
 
 private:
 	virtual void bind() override;

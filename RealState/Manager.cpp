@@ -86,12 +86,12 @@ void ContractManager::save_data(std::ofstream &outf)
 	RefManager<Contract>::save_data(outf);
 }
 
-bool ContractManager::is_residence_taken(int id)
+bool ContractManager::is_residence_taken(int id, bool be_verified)
 {
 	Residence *r = resman.query_residence(id);
-	auto contracts = query_contract([resId = id](Contract &c)
+	auto contracts = query_contract([resId = id, be_verified](Contract &c)
 	{
-		return c.get_verified() && c.get_residenceid() == resId;
+		return (!be_verified || c.get_verified()) && c.get_residenceid() == resId;
 	});
 	if (contracts.size() != 0)
 		return true;
@@ -99,9 +99,9 @@ bool ContractManager::is_residence_taken(int id)
 	if (r->get_type() == ResidenceType::Apartment)
 	{
 		Apartment &ap = dynamic_cast<Apartment &>(*r);
-		auto bcontracts = query_contract([bId = ap.get_buildingid()](Contract &c)
+		auto bcontracts = query_contract([bId = ap.get_buildingid(), be_verified](Contract &c)
 		{
-			return c.get_verified() && c.get_residenceid() == bId;
+			return (!be_verified || c.get_verified()) && c.get_residenceid() == bId;
 		});
 		if (bcontracts.size() != 0)
 			return true;
@@ -109,14 +109,14 @@ bool ContractManager::is_residence_taken(int id)
 	else if (r->get_type() == ResidenceType::ApartmentBuilding)
 	{
 		ApartmentBuilding &building = dynamic_cast<ApartmentBuilding &>(*r);
-		auto contractedaps = resman.query_residence([this, bId = building.get_id()](Residence &r)
+		auto contractedaps = resman.query_residence([this, bId = building.get_id(), be_verified](Residence &r)
 		{
 			if (r.get_type() == ResidenceType::Apartment)
 				if (dynamic_cast<Apartment&>(r).get_buildingid() == bId)
 				{
-					auto contracts = query_contract([resId = r.get_id()](Contract &c)
+					auto contracts = query_contract([resId = r.get_id(), be_verified](Contract &c)
 					{
-						return c.get_verified() && c.get_residenceid() == resId;
+						return (!be_verified || c.get_verified()) && c.get_residenceid() == resId;
 					});
 					return contracts.size() != 0;
 				}
